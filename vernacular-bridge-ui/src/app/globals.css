@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Noto+Sans+Tamil:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --primary-teal: #0f766e;
+  --primary-indigo: #4338ca;
+  --primary-amber: #d97706;
+}
+
+* {
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Outfit', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  accent-color: var(--primary-teal);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply tracking-tight font-black text-slate-900;
+}
+
+p {
+  @apply text-slate-600 leading-relaxed max-w-none;
+}
+
+.tamil-font {
+  font-family: 'Noto Sans Tamil', sans-serif;
+  @apply leading-[1.8] tracking-normal;
+}
+
+.academic-font {
+  font-family: 'Lora', serif;
+  @apply leading-[1.9] tracking-[0.01em];
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Custom Scrollbar for a premium feel */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

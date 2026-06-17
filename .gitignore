@@ -1,0 +1,87 @@
+# ========================
+# Python
+# ========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+dist/
+build/
+*.whl
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Linting / Formatting
+.ruff_cache/
+.mypy_cache/
+
+# ========================
+# Node / Next.js
+# ========================
+node_modules/
+.next/
+out/
+.vercel/
+*.tsbuildinfo
+next-env.d.ts
+
+# ========================
+# Environment / Secrets
+# ========================
+.env
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ========================
+# OS / Editor
+# ========================
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# ========================
+# Logs
+# ========================
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ========================
+# Project-specific
+# ========================
+# Codebuff internal state
+.refact/
+
+# Scratch / temp files
+scratch/
+aa.txt
+bb.txt
+
+# Large media files
+*.mp4
+*.mov
+*.avi
+
+# Generated output
+raw_llm_output.txt
+final_output.json

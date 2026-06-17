@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>நமது பிரச்சனை | The Real Problem</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Noto Sans Tamil', system-ui, sans-serif;
+    }
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen py-12">
+
+  <div class="max-w-6xl mx-auto px-6">
+    
+    <!-- Header -->
+    <div class="text-center mb-16">
+      <div class="inline-flex items-center gap-3 bg-white rounded-full px-6 py-2 shadow-sm mb-6">
+        <span class="text-3xl">📚</span>
+        <span class="text-xl font-semibold text-gray-700">முதல் தலைமுறை மாணவர்களின் போராட்டம்</span>
+      </div>
+      <h1 class="text-5xl font-bold text-gray-900 leading-tight mb-4">
+        ஆங்கிலம் தெரியாததால்<br>புத்திசாலி மாணவர்கள் தோற்கிறார்கள்
+      </h1>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        இந்திய அரசு கல்லூரிகளில் 45% மாணவர்கள் இந்த பிரச்சனையால் பாதிக்கப்படுகிறார்கள்
+      </p>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <!-- Card 1 -->
+      <div class="bg-white rounded-3xl shadow-xl overflow-hidden card-hover">
+        <div class="h-2 bg-gradient-to-r from-blue-500 to-indigo-600"></div>
+        <div class="p-8">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-3xl">🏠</div>
+            <div>
+              <h3 class="text-2xl font-semibold text-gray-800">முதல் தலைமுறை மாணவர்கள்</h3>
+              <p class="text-blue-600 font-medium">45% of students</p>
+            </div>
+          </div>
+          <p class="text-gray-700 text-lg leading-relaxed">
+            குடும்பத்தில் யாரும் கல்லூரிக்கு சென்றதில்லை. 
+            10ம் வகுப்பு வரை <span class="font-semibold text-emerald-600">தமிழ் வழியில்</span> படித்தவர்கள்.
+          </p>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="bg-white rounded-3xl shadow-xl overflow-hidden card-hover">
+        <div class="h-2 bg-gradient-to-r from-rose-500 to-orange-500"></div>
+        <div class="p-8">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-14 h-14 bg-rose-100 rounded-2xl flex items-center justify-center text-3xl">📖</div>
+            <div>
+              <h3 class="text-2xl font-semibold text-gray-800">கல்லூரியில் நுழைந்ததும்...</h3>
+              <p class="text-rose-600 font-medium">Suddenly everything in English</p>
+            </div>
+          </div>
+          <ul class="space-y-4 text-gray-700 text-lg">
+            <li class="flex gap-3">
+              <span class="text-rose-500 mt-1">•</span>
+              வகுப்புகள் ஆங்கிலத்தில்
+            </li>
+            <li class="flex gap-3">
+              <span class="text-rose-500 mt-1">•</span>
+              பாடப்புத்தகங்கள் ஆங்கிலத்தில்
+            </li>
+            <li class="flex gap-3">
+              <span class="text-rose-500 mt-1">•</span>
+              தேர்வு கேள்விகள் & பதில்கள் ஆங்கிலத்தில்
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="bg-white rounded-3xl shadow-xl overflow-hidden card-hover">
+        <div class="h-2 bg-gradient-to-r from-emerald-500 to-teal-600"></div>
+        <div class="p-8">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center text-3xl">😔</div>
+            <div>
+              <h3 class="text-2xl font-semibold text-gray-800">என்ன நடக்கிறது?</h3>
+              <p class="text-emerald-600 font-medium">The Real Tragedy</p>
+            </div>
+          </div>
+          <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 text-center">
+            <p class="text-2xl font-semibold text-emerald-700 leading-relaxed">
+              புத்திசாலித்தனம் இல்லாததால் அல்ல...<br>
+              <span class="text-emerald-800">மொழி புரியாததால்</span> மாணவர்கள் தோற்கிறார்கள்
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Big Impact Card -->
+      <div class="lg:col-span-3 bg-gradient-to-r from-indigo-700 to-blue-800 text-white rounded-3xl shadow-2xl p-12">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 class="text-4xl font-bold mb-8 leading-tight">
+              இந்த மொழி இடைவெளி<br>
+              <span class="text-indigo-200">ஒரு பெரிய அநீதி</span>
+            </h2>
+            
+            <div class="space-y-6 text-lg">
+              <div class="flex gap-5">
+                <i class="fa-solid fa-arrow-right text-2xl mt-1 text-indigo-300"></i>
+                <p>தமிழில் எளிதாக புரிந்துகொள்ளும் மாணவர், ஆங்கிலத்தில் அதே கருத்தை எழுத முடியாமல் தோற்றுப்போகிறார்.</p>
+              </div>
+              <div class="flex gap-5">
+                <i class="fa-solid fa-arrow-right text-2xl mt-1 text-indigo-300"></i>
+                <p>ஸ்காலர்ஷிப், ஃபீ வேிவர், கல்லூரி நடைமுறைகள் எதுவும் தெரியாமல் இருக்கிறார்கள்.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20">
+            <h3 class="text-2xl font-semibold mb-6 flex items-center gap-3">
+              <span class="text-3xl">🚨</span> 
+              முக்கிய பிரச்சனை என்ன?
+            </h3>
+            <div class="space-y-6 text-lg">
+              <div class="flex items-start gap-4">
+                <div class="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0 mt-1">1</div>
+                <p>அகாடெமிக் ஆங்கிலம் ≠ சாதாரண ஆங்கிலம். நேரடி மொழிபெயர்ப்பு வேலை செய்யாது.</p>
+              </div>
+              <div class="flex items-start gap-4">
+                <div class="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0 mt-1">2</div>
+                <p>வீட்டில் இருந்து வரும் "மறைக்கப்பட்ட அறிவு" (Hidden Curriculum) இல்லை.</p>
+              </div>
+              <div class="flex items-start gap-4">
+                <div class="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0 mt-1">3</div>
+                <p>இதனால் திறமையான மாணவர்கள் வீணாகிறார்கள்.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Final Message -->
+    <div class="mt-20 text-center">
+      <div class="max-w-2xl mx-auto bg-white rounded-3xl shadow-xl p-10">
+        <p class="text-3xl font-semibold text-gray-800 leading-relaxed">
+          நாம் உருவாக்க வேண்டியது ஒரு <span class="text-indigo-600">AI பாலம்</span><br>
+          தமிழ் மனதுக்கும் — அகாடெமிக் ஆங்கிலத்துக்கும் இடையே
+        </p>
+        <p class="mt-6 text-gray-600 text-lg">
+          வெறும் மொழிபெயர்ப்பு அல்ல... <strong>புரிதல் + நம்பிக்கை + வெற்றி</strong> கொடுக்கும் தளம்
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

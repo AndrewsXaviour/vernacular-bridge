@@ -1,0 +1,146 @@
+Project Title
+Vernacular Bridge: Bilingual Academic Bridging & Exam Preparation Intelligence
+Tagline
+Not just translation. A Cognitive Bridge that turns Tamil-medium understanding into academic English mastery for first-generation students.
+1. 🎯 Problem Statement
+A Tamil-medium student can clearly explain a concept in their mother tongue, but fails to express the same answer in academic English during exams.
+This gap is not due to lack of understanding, but lack of language bridging.
+Approximately 45% of undergraduate students in Indian government universities are first-generation college students — the first in their family to attend higher education. They arrive with strong foundational knowledge from Tamil-medium schools, but higher education operates entirely in English — textbooks, instruction, and examinations.
+The resulting language-knowledge gap leads to academic failure attributable to language barriers rather than intellectual incapacity.
+What first-generation learners need is not translation, but bilingual academic bridging — concept explanation in both languages with culturally situated examples and explicit academic language development support.
+2. 🎯 Objective
+To build a Cognitive Bridge System that transforms a student’s Tamil-medium understanding into confident academic English performance through structured bilingual explanations, exam question decoding, answer templating, and intelligent exam preparation.
+3. 👤 Target Users
+First-generation undergraduate students from Tamil-medium school backgrounds entering English-medium higher education in Tamil Nadu and South India.
+4. 🎯 Golden Demo Flow (The Transformation Storyline)
+Before → After Transformation
+Before (Student State):
+
+Understands concepts only in simple Tamil
+Cannot express ideas in academic English
+Struggles with exam question structure and answer formatting
+
+After (Using Vernacular Bridge):
+
+Gains deep conceptual clarity in simple Tamil
+Masters academic English expression
+Knows exactly how to structure answers for university exams
+Feels confident and prepared
+
+Golden Demo Flow (One Continuous Narrative):
+
+Student asks in Tamil or mixed Tanglish: “ஒளிச்சேர்க்கை explain pannunga”
+System provides simple, culturally situated Tamil explanation
+System upgrades it to precise academic English
+Student pastes an exam-style question → System decodes the question type and provides a section-by-section answer template
+System generates concept-based MCQs directly tied to the explanation
+Student experiences the complete cognitive bridge in one seamless flow
+
+5. ⚙️ Core Features (Focused Hackathon Scope)
+Must-Have Features
+
+Bilingual Concept Explainer: Delivers simple, neutral, textbook-style Tamil (with culturally situated examples and analogies) + precise academic English with clear steps.
+Academic Question Decoder: Identifies question type (define, explain, compare, analyse, etc.) and provides a ready section-by-section response template.
+Exam Preparation Intelligence: Generates medium-difficulty, concept-based MCQs directly from the explanation. These include:
+Concept understanding checks
+Common misconception traps
+Application-based questions
+
+Writing Coach Lite (stretch goal): Basic structured feedback on short student draft answers.
+
+Strict Structured Output
+{
+  "tamil_simple": "...",
+  "english_academic": "...",
+  "steps": ["...", "..."],
+  "question_decoder": {
+    "question_type": "...",
+    "expected_structure": "...",
+    "answer_template": "..."
+  },
+  "mcqs": [...]
+}
+6. 🛠️ Why Not ChatGPT? (Clear Differentiation)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+AspectGeneric LLMs (e.g. ChatGPT)Vernacular BridgeOutput StructureFree-form, inconsistentStrict bilingual structured JSONLanguage ControlMixed tone, possible slangControlled simple textbook Tamil + precise academic EnglishExam FocusGeneral answersQuestion decoding + structured templatesConsistency & AccuracyVaries widelyQuality checks + internal consistencyAccessibilityRequires internet + API costFully offline, zero cost
+Vernacular Bridge is purpose-built for the exact pain point in PS-21.
+7. 🛠️ Zero-Cost, Fully Local Tech Stack
+
+Inference: llama.cpp server (preferred) or Ollama
+Model: Qwen3-8B-Instruct or Qwen2.5-7B-Instruct Q4_K_M GGUF
+Structured Output: GBNF grammar + max_tokens=1200
+Frontend: Gradio (fastest for demo) or Streamlit
+Backend: FastAPI Orchestrator
+Cache: Pre-cached demo queries (visible + hidden backups)
+
+Key Advantage: Works completely offline — making it accessible to rural and low-connectivity students.
+8. 🔄 Robustness
+
+Handles mixed Tamil-English (Tanglish) inputs through intelligent preprocessing
+Requests clarification for highly ambiguous questions
+Falls back gracefully to simpler explanations when complex generation fails
+Cold-start warm-up, input disabling during generation, and single concurrent request limit for stability
+
+9. 📊 Risks & Mitigation
+
+Hallucination → Controlled via structured outputs, GBNF grammar, and multi-layer validation checks
+Language inconsistency → Enforced through strict prompt design, simple Tamil constraints, and quality checks
+Factual drift → NCERT-level accuracy bias and internal consistency validation
+
+10. 🚀 Future Expansion
+
+Support for additional Indian languages (Hindi, Telugu, Kannada)
+Voice-first interface for low-literacy users
+Integration with university syllabus datasets
+Personalized learning paths based on student performance
+
+11. 📋 Hackathon Execution Plan
+Priority 1: Bilingual explainer + Question Decoder + MCQ generation + GBNF + quality checks
+Priority 2: Safe UI rendering + Golden Demo Flow + pre-caching
+Priority 3: Writing Coach Lite + robustness features + final polish
+Evaluation Strategy
+
+Tested on 5 core concepts across Science and Social Science
+20 sample university examination questions decoded
+Manual validation of Tamil clarity, academic English precision, and MCQ quality
+
+12. 🚀 Judging Pitch (60 seconds)
+“A Tamil-medium student can explain a concept clearly in Tamil, but freezes when asked to write the same answer in academic English during exams.
+Vernacular Bridge is the Cognitive Bridge that fixes this.
+Watch the transformation: Student asks in Tamil → gets simple, clear Tamil explanation → sees the upgraded academic English version → pastes an exam question → receives a structured answer template + high-quality concept-based MCQs.
+Unlike generic ChatGPT, our system enforces textbook Tamil, precise academic English, question decoding, and internal consistency — and it runs completely offline with zero cost.
+This is exactly what first-generation students need to turn their understanding into academic success.”

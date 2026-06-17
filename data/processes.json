@@ -1,0 +1,63 @@
+[
+  {
+    "name": "Semester Registration",
+    "steps": [
+      "Access the Student Management System (SEMS) portal through the university website.",
+      "Log in with Roll Number and password, then verify personal and academic profile details.",
+      "Select core and elective courses for the current semester as per the curriculum.",
+      "Pay the prescribed semester tuition and hostel fees via the integrated online payment gateway.",
+      "Download and print the registration confirmation slip for submission to the Head of Department (HOD)."
+    ],
+    "documents_required": [
+      "College Identity Card",
+      "Fee Payment Receipt (Online)",
+      "Aadhar Card (for KYC verification)",
+      "Bank Passbook (copy for scholarship auto-credit verification)"
+    ],
+    "deadline": "Typically within 10-15 days of the semester commencement date.",
+    "official_reference": "https://acoe.annauniv.edu/",
+    "university_scope": "Anna University (typical), similar across TN universities",
+    "search_keywords": ["registration", "course selection", "tuition fee", "sems", "enrollment", "college login", "semester start"],
+    "last_verified": "2026-04"
+  },
+  {
+    "name": "Exam Form Submission",
+    "steps": [
+      "Log in to the Controller of Examinations (COE) student portal during the application window.",
+      "Verify the list of regular subjects for the current semester.",
+      "Select arrear (backlog) subjects if applicable from the previous semesters.",
+      "Pay the examination fee per paper through digital payment (Net Banking/UPI/Card).",
+      "Confirm the examination center and download the Hall Ticket once generated."
+    ],
+    "documents_required": [
+      "Current Semester ID Card",
+      "Digital Passport Size Photograph (for Hall Ticket)",
+      "Previous Semester Marklists (to verify arrear subject codes)"
+    ],
+    "deadline": "Usually 30 days before the start of the end-semester examinations (typically Apr/Nov).",
+    "official_reference": "https://coe1.annauniv.edu/",
+    "university_scope": "Anna University (typical), similar across TN universities",
+    "search_keywords": ["exam", "hall ticket", "arrear", "exam fee", "coe", "registration", "subject selection", "university exam"],
+    "last_verified": "2026-04"
+  },
+  {
+    "name": "Revaluation Process",
+    "steps": [
+      "Check the published results on the official university portal.",
+      "Apply for the digital photocopy of the answer script within the stipulated time.",
+      "Pay the photocopy fee per subject online.",
+      "Review the answer script with the subject teacher/expert to identify marking discrepancies.",
+      "If discrepancies exist, submit the formal application for revaluation/review and pay the revaluation fee."
+    ],
+    "documents_required": [
+      "Online Result Printout",
+      "Answer Script Photocopy (obtained from COE)",
+      "Fee Payment Receipt for Revaluation"
+    ],
+    "deadline": "Strictly within 7 days of result publication (Photocopy) and 7 days after receiving photocopy (Revaluation).",
+    "official_reference": "https://coe1.annauniv.edu/",
+    "university_scope": "Anna University (typical), similar across TN universities",
+    "search_keywords": ["results", "revaluation", "photocopy", "answer script", "paper review", "coe", "marks check", "appeal"],
+    "last_verified": "2026-04"
+  }
+]

@@ -1,0 +1,86 @@
+[
+  {
+    "name": "Pudhumai Penn Scheme (Moovalur Ramamirtham Ammaiyar Higher Education Assurance Scheme)",
+    "eligibility": "Girl students who studied from Class 6 to 12 in Government schools in Tamil Nadu and are currently pursuing a degree, diploma, or ITI course.",
+    "deadline": "Rolling basis (typically starts June-July annually)",
+    "benefits": "\u20b91,000 per month credited directly to the student's bank account until completion of course.",
+    "official_link": "https://www.penkalvi.tn.gov.in/",
+    "category": ["General", "OBC", "SC", "ST", "Minority"],
+    "source_type": "government",
+    "applicable_for": "UG | Diploma | ITI",
+    "search_keywords": ["girls", "government school", "higher education", "monthly aid", "tamil nadu", "financial support"],
+    "last_verified": "2026-04"
+  },
+  {
+    "name": "First Graduate Scholarship",
+    "eligibility": "Residents of Tamil Nadu who are the first in their family to pursue graduation. Requires a First Graduate Certificate from the Tahsildar.",
+    "deadline": "Applied during college counseling/admission phase (typically June-August)",
+    "benefits": "Complete waiver of tuition fees in Government colleges and fee concession in self-financing colleges.",
+    "official_link": "https://www.tnesevai.tn.gov.in/",
+    "category": ["General", "OBC", "SC", "ST", "Minority"],
+    "source_type": "government",
+    "applicable_for": "UG",
+    "search_keywords": ["first graduate", "tuition fee waiver", "college admission", "tamil nadu", "first generation"],
+    "last_verified": "2026-04"
+  },
+  {
+    "name": "Post Matric Scholarship for Minorities (NSP)",
+    "eligibility": "Students from minority communities (Muslim, Christian, Sikh, Buddhist, Jain, Parsi) with 50% marks in previous exam and family income < \u20b92.0 Lakhs.",
+    "deadline": "Varies yearly (typically Oct-Dec)",
+    "benefits": "Admission and tuition fees reimbursement plus a monthly maintenance allowance.",
+    "official_link": "https://scholarships.gov.in/",
+    "category": ["Minority"],
+    "source_type": "government",
+    "applicable_for": "UG | PG | Diploma",
+    "search_keywords": ["minority", "muslim", "christian", "sikh", "buddhist", "jain", "parsi", "post matric", "nsp"],
+    "last_verified": "2026-04"
+  },
+  {
+    "name": "PM-USP (Central Sector Scheme of Scholarship for College and University Students)",
+    "eligibility": "Students above 80th percentile of successful candidates in Class 12 of the respective Board of Examination with family income < \u20b94.5 Lakhs.",
+    "deadline": "Varies yearly (typically Oct-Nov)",
+    "benefits": "\u20b912,000 per year for first 3 years of UG; \u20b920,000 per year for PG/Professional courses.",
+    "official_link": "https://scholarships.gov.in/",
+    "category": ["General", "OBC", "SC", "ST"],
+    "source_type": "government",
+    "applicable_for": "UG | PG",
+    "search_keywords": ["central sector", "merit scholarship", "college scholarship", "university scholarship", "80th percentile", "financial aid"],
+    "last_verified": "2026-04"
+  },
+  {
+    "name": "INSPIRE Scholarship for Higher Education (SHE)",
+    "eligibility": "Students in the top 1% of their Class 12 board results pursuing bachelor's or master's in Natural and Basic Sciences.",
+    "deadline": "Varies yearly (typically Oct-Dec)",
+    "benefits": "\u20b980,000 per year including a fixed scholarship and a summer research project allowance.",
+    "official_link": "https://online-inspire.gov.in/",
+    "category": ["General", "OBC", "SC", "ST"],
+    "source_type": "government",
+    "applicable_for": "UG | Integrated MSc",
+    "search_keywords": ["science", "research", "merit scholarship", "basic science", "natural science", "dst inspire"],
+    "last_verified": "2026-04"
+  },
+  {
+    "name": "AICTE Pragati Scholarship for Girl Students",
+    "eligibility": "Girl students admitted in 1st year degree/diploma technical courses with family income < \u20b98 Lakhs. Max 2 per family.",
+    "deadline": "Varies yearly (typically Oct-Dec)",
+    "benefits": "\u20b950,000 per year for every year of study as a lump sum for academic incidentals.",
+    "official_link": "https://www.aicte-india.org/schemes/students-development-schemes/pragati-scholarship-scheme",
+    "category": ["General", "OBC", "SC", "ST"],
+    "source_type": "government",
+    "applicable_for": "UG | Diploma",
+    "search_keywords": ["girls", "engineering", "diploma", "technical education", "aicte", "pragati scholarship"],
+    "last_verified": "2026-04"
+  },
+  {
+    "name": "Post-Matric Scholarship for SC/ST/SCC (Tamil Nadu)",
+    "eligibility": "TN resident students belonging to SC/ST or Adi Dravidar Converts (SCC) with family income < \u20b92.5 Lakhs.",
+    "deadline": "Varies yearly (typically Feb-March)",
+    "benefits": "Reimbursement of all non-refundable fees (tuition/hostel) plus a monthly maintenance allowance.",
+    "official_link": "https://www.tn.gov.in/scheme/data_view/6847",
+    "category": ["SC", "ST"],
+    "source_type": "government",
+    "applicable_for": "UG | PG | Diploma",
+    "search_keywords": ["sc", "st", "scc", "adi dravidar", "hostel fee", "tuition fee", "tamil nadu", "pms"],
+    "last_verified": "2026-04"
+  }
+]

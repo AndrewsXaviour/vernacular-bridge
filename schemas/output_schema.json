@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Vernacular Bridge Output Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status",
+    "confidence_score",
+    "failure_reasons",
+    "tamil_simple",
+    "english_academic",
+    "steps",
+    "question_decoder",
+    "mcqs"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["success", "retry", "fallback"]
+    },
+    "confidence_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "failure_reasons": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "tamil_simple": {
+      "type": "string",
+      "minLength": 50,
+      "maxLength": 800
+    },
+    "english_academic": {
+      "type": "string",
+      "minLength": 80,
+      "maxLength": 1200
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 7,
+      "items": { "type": "string" }
+    },
+    "question_decoder": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["question_type", "expected_structure", "answer_template"],
+      "properties": {
+        "question_type": {
+          "type": "string",
+          "enum": ["define", "explain", "compare", "analyze", "diagram", "short_note"]
+        },
+        "expected_structure": { "type": "string" },
+        "answer_template": { "type": "string" }
+      }
+    },
+    "mcqs": {
+      "type": "array",
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["question", "options", "correct_answer"],
+        "properties": {
+          "question": { "type": "string" },
+          "options": {
+            "type": "array",
+            "minItems": 4,
+            "maxItems": 4,
+            "items": { "type": "string" },
+            "uniqueItems": true
+          },
+          "correct_answer": { "type": "string" }
+        }
+      }
+    }
+  }
+}

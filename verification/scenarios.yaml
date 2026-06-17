@@ -1,0 +1,95 @@
+- name: low_tamil_case
+  type: LOW_TAMIL
+  expected:
+    status: retry
+    failure_reason: LOW_TAMIL_RATIO
+
+- name: no_tamil_case
+  type: NO_TAMIL
+  expected:
+    status: fallback
+    failure_reason: NO_TAMIL
+
+- name: invalid_mcq_count_case
+  type: MCQ_INVALID_COUNT
+  expected:
+    status: fallback
+    failure_reason: SCHEMA_INVALID
+
+- name: duplicate_mcq_options_case
+  type: MCQ_DUPLICATE_OPTIONS
+  expected:
+    status: fallback
+    failure_reason: SCHEMA_INVALID
+
+- name: mcq_wrong_correct_case
+  type: MCQ_WRONG_CORRECT
+  expected:
+    status: fallback
+    failure_reason: SCHEMA_INVALID
+
+- name: mcq_trivial_case
+  type: MCQ_TRIVIAL
+  expected:
+    status: retry
+    failure_reason: MCQ_TRIVIAL
+
+- name: alignment_failure_case
+  type: LOW_ALIGNMENT
+  expected:
+    status: retry
+    failure_reason: LOW_ALIGNMENT
+
+- name: invalid_steps_count_case
+  type: STEPS_INVALID_COUNT
+  expected:
+    status: fallback
+    failure_reason: SCHEMA_INVALID
+
+- name: steps_duplicate_case
+  type: STEPS_DUPLICATE
+  expected:
+    status: retry
+    failure_reason: LOW_ALIGNMENT
+
+- name: extra_fields_case
+  type: EXTRA_FIELDS
+  expected:
+    status: fallback
+    failure_reason: SCHEMA_INVALID
+
+- name: random_noise_case
+  type: RANDOM_NOISE
+  expected:
+    status: fallback
+    failure_reason: SCHEMA_INVALID
+
+- name: empty_output_case
+  type: EMPTY_OUTPUT
+  expected:
+    status: fallback
+    failure_reason: SCHEMA_INVALID
+
+- name: partial_fields_case
+  type: PARTIAL_FIELDS
+  expected:
+    status: fallback
+    failure_reason: SCHEMA_INVALID
+
+- name: wrong_schema_version_case
+  type: WRONG_SCHEMA_VERSION
+  expected:
+    status: fallback
+    failure_reason: SCHEMA_INVALID
+
+- name: extremely_long_text_case
+  type: EXTREMELY_LONG_TEXT
+  expected:
+    status: fallback
+    failure_reason: SCHEMA_INVALID
+
+- name: mixed_script_corruption_case
+  type: MIXED_SCRIPT_CORRUPTION
+  expected:
+    status: retry
+    failure_reason: LOW_TAMIL_RATIO
