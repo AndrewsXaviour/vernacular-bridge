@@ -9,7 +9,7 @@ export default function ResultPlaceholder() {
       </div>
       <h3 className="text-xl font-semibold text-gray-500 mb-2">Ready to Transform</h3>
       <p className="max-w-xs">
-        Enter a concept on the left to see the cognitive transformation in action.
+        Enter a concept above to see the cognitive transformation in action.
       </p>
     </div>
   );
