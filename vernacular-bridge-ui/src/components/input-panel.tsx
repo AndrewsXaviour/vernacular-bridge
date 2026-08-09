@@ -4,6 +4,7 @@ import { Send, Lightbulb } from 'lucide-react';
 interface InputPanelProps {
   onTransform: (text: string) => void;
   isLoading: boolean;
+  demoMode?: boolean;
 }
 
 const demos = [
@@ -14,7 +15,7 @@ const demos = [
   "Freedom Struggle"
 ];
 
-export default function InputPanel({ onTransform, isLoading }: InputPanelProps) {
+export default function InputPanel({ onTransform, isLoading, demoMode }: InputPanelProps) {
   const [input, setInput] = React.useState("");
 
   const handleSubmit = (e: React.FormEvent) => {

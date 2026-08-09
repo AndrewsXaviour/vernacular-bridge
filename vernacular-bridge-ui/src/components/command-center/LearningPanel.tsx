@@ -73,12 +73,13 @@ export default function LearningPanel() {
   }
 
   // 4. SCROLL BUTTONS — USE REF
-  const scrollToSection = (ref: React.RefObject<HTMLDivElement>, section: string) => {
+  const scrollToSection = (ref: React.RefObject<HTMLDivElement | null>, section: string) => {
     setOpenSection(section)
     setTimeout(() => {
       ref.current?.scrollIntoView({ behavior: "smooth", block: "start" })
     }, 100)
   }
+
 
   return (
     <div className={`relative ${activePanel === "learn" ? "max-w-4xl mx-auto py-12 px-8" : "p-6"} space-y-8 animate-in fade-in duration-500`}>
