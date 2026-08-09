@@ -257,8 +257,9 @@ export default function DashboardPage() {
   const [demoMode, setDemoMode] = useState(false);
 
   const handleTransform = async (text: string) => {
-    // Generate a simple hash for concept identification
-    const newConceptId = btoa(text.slice(0, 10)).replace(/[^a-zA-Z0-9]/g, '');
+    // Generate a simple Unicode-safe hash for concept identification
+    const encodedText = Array.from(new TextEncoder().encode(text.slice(0, 10)), (b) => String.fromCharCode(b)).join('');
+    const newConceptId = btoa(encodedText).replace(/[^a-zA-Z0-9]/g, '') || `concept_${Date.now()}`;
     setConceptId(newConceptId);
     
     setIsLoading(true);
