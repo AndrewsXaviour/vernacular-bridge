@@ -1,6 +1,6 @@
 import pytest
 from pydantic import ValidationError
-from models.contracts import OutputSchema, Status, MCQ, QuestionDecoder
+from models.contracts import OutputSchema, MCQ, QuestionDecoder
 from validators.validators import (
     calculate_tamil_ratio, 
     validate_semantic_alignment, 
@@ -11,14 +11,10 @@ from validators.validators import (
 )
 from utils.preprocessing import normalize_input, handle_tanglish
 
-# Mock Data
+# Mock Data — matches OutputSchema fields exactly (no schema_version, status, etc.)
 VALID_SUCCESS_DATA = {
-    "schema_version": "1.0",
-    "status": "success",
-    "confidence_score": 0.95,
-    "failure_reasons": [],
-    "tamil_simple": "ஒளிச்சேர்க்கை என்பது தாவரங்கள் சூரிய ஒளியைப் பயன்படுத்தி உணவைத் தயாரிக்கும் ஒரு செயல்முறையாகும். இது மிகவும் முக்கியமானது.", # Length > 50
-    "english_academic": "Photosynthesis is the fundamental biological process by which autotrophic organisms convert light energy into chemical energy, synthesising organic compounds like glucose. This is vital for life.", # Length > 80
+    "tamil_simple": "ஒளிச்சேர்க்கை என்பது தாவரங்கள் சூரிய ஒளியைப் பயன்படுத்தி உணவைத் தயாரிக்கும் ஒரு செயல்முறையாகும். இது மிகவும் முக்கியமானது.",
+    "english_academic": "Photosynthesis is the fundamental biological process by which autotrophic organisms convert light energy into chemical energy, synthesising organic compounds like glucose. This is vital for life.",
     "steps": ["Step 1: Absorption of light", "Step 2: Water splitting", "Step 3: Carbon fixation"],
     "question_decoder": {
         "question_type": "explain",
@@ -37,8 +33,9 @@ VALID_SUCCESS_DATA = {
 def test_valid_success_output_passes():
     """Verify that a perfectly formed output passes Pydantic validation."""
     model = OutputSchema(**VALID_SUCCESS_DATA)
-    assert model.status == Status.SUCCESS
-    assert model.schema_version == "1.0"
+    assert model.tamil_simple is not None
+    assert model.english_academic is not None
+    assert len(model.steps) >= 2
 
 def test_low_tamil_ratio_triggers_retry_logic():
     """Verify that low Tamil character density can be detected."""
@@ -69,32 +66,34 @@ def test_duplicate_mcqs_rejected():
     assert is_diverse is False
 
 def test_fallback_relaxes_constraints():
-    """Verify that Pydantic allows valid fallback structures."""
+    """Verify that Pydantic allows valid fallback structures with reduced data."""
     fallback_data = VALID_SUCCESS_DATA.copy()
-    fallback_data["status"] = Status.FALLBACK
     fallback_data["mcqs"] = []
-    fallback_data["steps"] = ["Reduced steps."]
+    fallback_data["steps"] = ["Reduced steps.", "Additional step."]
     
     # We still need to satisfy Pydantic's min_length
     fallback_data["tamil_simple"] = "இந்த கருத்தை விளக்க முடியவில்லை. " * 5 
     fallback_data["english_academic"] = "Unable to explain content properly. " * 5
     
     model = OutputSchema(**fallback_data)
-    assert model.status == Status.FALLBACK
+    assert len(model.steps) == 2
 
-def test_schema_version_mismatch_fails():
-    """Verify that wrong schema versions are rejected."""
-    bad_version = VALID_SUCCESS_DATA.copy()
-    bad_version["schema_version"] = "2.0"
+def test_steps_too_few_rejected():
+    """Verify that fewer than 2 steps are rejected by OutputSchema."""
+    bad_data = VALID_SUCCESS_DATA.copy()
+    bad_data["steps"] = ["Only one step."]
     with pytest.raises(ValidationError):
-        OutputSchema(**bad_version)
+        OutputSchema(**bad_data)
 
-def test_mcq_correct_answer_not_in_options_fails():
-    """Verify that MCQs must have the correct answer in their options."""
-    bad_mcq = VALID_SUCCESS_DATA.copy()
-    bad_mcq["mcqs"][0]["correct_answer"] = "Not An Option"
-    with pytest.raises(ValidationError):
-        OutputSchema(**bad_mcq)
+def test_mcq_correct_answer_not_in_options_replaced():
+    """Verify that when correct_answer is not in options, last option is replaced."""
+    data = VALID_SUCCESS_DATA.copy()
+    data["mcqs"][0]["correct_answer"] = "Not An Option"
+    model = OutputSchema(**data)
+    # Last option ("Xanthophyll") was replaced with "Not An Option"
+    assert model.mcqs[0].correct_answer == "Not An Option"
+    assert "Not An Option" in model.mcqs[0].options
+    assert len(model.mcqs[0].options) == 4
 
 def test_repeated_character_normalization():
     """Verify that 'helloooo' is normalized to 'helloo' (max 2 allowed)."""
@@ -151,4 +150,4 @@ def test_retry_not_fallback_for_mcq_issue():
     # We can use the adversarial generator to get a case
     result = run_verification_case("MCQ_TRIVIAL")
     assert result["triggered_status"] == "retry"
-    assert "MCQ_TRIVIAL" in result["failure_reasons"]
+    assert any("MCQ_TRIVIAL" in r for r in result["failure_reasons"])

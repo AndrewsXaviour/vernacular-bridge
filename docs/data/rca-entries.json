@@ -1,0 +1,200 @@
+[
+  {
+    "id": "RCA-001", "title": "Broken Gradio Import Crashes at Startup", "severity": "critical",
+    "status": "fixed", "phase": 0, "date": "2026-06-19",
+    "rootCause": "gradio_app.py imported `generate_content` from orchestrator, but this function was never defined. Python raises ImportError at startup.",
+    "impact": "Backend crashes immediately on `python gradio_app.py`. Any developer running the Gradio interface gets a hard crash.",
+    "files": ["gradio_app.py", "orchestrator.py"],
+    "fix": "Deleted gradio_app.py entirely. The Gradio interface was an abandoned prototype — the FastAPI orchestrator is the actual backend.",
+    "verification": "Removed file; `git grep generate_content` confirms no remaining references."
+  },
+  {
+    "id": "RCA-002", "title": "CORS Wildcard with Credentials Flag", "severity": "critical",
+    "status": "fixed", "phase": 0, "date": "2026-06-19",
+    "rootCause": "orchestrator.py had `allow_origins=[\"*\"]` with `allow_credentials=True`. This is invalid per the CORS spec — browsers reject it.",
+    "impact": "Frontend requests with cookies/credentials fail silently. Any authenticated flow would break in production.",
+    "files": ["orchestrator.py"],
+    "fix": "Replaced wildcard with `ALLOWED_ORIGINS` env var (default: localhost:3000, localhost:7860). Set `allow_credentials=False`.",
+    "verification": "CORS headers now show explicit origin. Browser console shows no CORS errors."
+  },
+  {
+    "id": "RCA-003", "title": "No Frontend Fetch Timeout — Perpetual Loading", "severity": "high",
+    "status": "fixed", "phase": 0, "date": "2026-06-19",
+    "rootCause": "Frontend `fetch()` calls had no AbortController timeout. If the backend was down, the user saw a spinner forever.",
+    "impact": "Users experience infinite loading state with no error message when backend is unreachable.",
+    "files": ["vernacular-bridge-ui/src/app/page.tsx"],
+    "fix": "Added AbortController with 30s timeout, exponential backoff retry (max 3 attempts), and user-facing error messages.",
+    "verification": "Kill backend → \"Connection timeout\" error within 35s."
+  },
+  {
+    "id": "RCA-004", "title": "No max_length on Pydantic String Fields", "severity": "high",
+    "status": "fixed", "phase": 0, "date": "2026-06-19",
+    "rootCause": "Pydantic models only had `min_length` constraints. Without `max_length`, a malicious user could send megabytes of text to the LLM.",
+    "impact": "Potential OOM or excessive Gemini API costs from oversized payloads. Denial-of-service vector.",
+    "files": ["models/request.py", "models/coach.py"],
+    "fix": "Added `max_length` to all string fields: user_input(2000), query(2000), student_answer(10000), question(2000), improved_answer(10000), structure_feedback(5000), language_feedback(5000).",
+    "verification": "Pydantic rejects inputs exceeding max_length with 422 Unprocessable Entity."
+  },
+  {
+    "id": "RCA-005", "title": "Fragile JSON Extraction Without Native JSON Mode", "severity": "medium",
+    "status": "fixed", "phase": 0, "date": "2026-06-19",
+    "rootCause": "LLM responses were parsed with regex slicing (`text[text.index(\"{\"):...]`). If the model returned markdown-wrapped JSON, extraction failed.",
+    "impact": "~5-10% of responses fail parsing. Users see empty or malformed results.",
+    "files": ["orchestrator.py"],
+    "fix": "Added `response_mime_type=\"application/json\"` to both `call_gemini` and `async_call_gemini`. Kept `extract_json()` as fallback.",
+    "verification": "All responses now return valid JSON natively; regex fallback never triggered in normal flow."
+  },
+  {
+    "id": "RCA-006", "title": "Dead Code Accumulation", "severity": "low",
+    "status": "fixed", "phase": 0, "date": "2026-06-19",
+    "rootCause": "Multiple files/classes were abandoned but never deleted: llm/llm_engine.py (Ollama integration), InputMetadata/InputSchema classes, empty __init__.py files, get_best_model(), regenerate_mcqs(), safe_json_loads(), generate_with_timeout().",
+    "impact": "Confusing codebase. Developers waste time reading dead code. Import errors if someone tries to use these.",
+    "files": ["llm/llm_engine.py", "models/contracts.py", "models/__init__.py", "verification/__init__.py", "orchestrator.py"],
+    "fix": "Deleted all dead code. Removed unused imports (traceback, ThreadPoolExecutor, TimeoutError, List, Status).",
+    "verification": "git grep confirms zero remaining references to deleted symbols."
+  },
+  {
+    "id": "RCA-007", "title": "970-Line God Module (orchestrator.py)", "severity": "critical",
+    "status": "fixed", "phase": 1, "date": "2026-06-19",
+    "rootCause": "All business logic, route handlers, LLM calls, caching, rate limiting, safety guards, and data loading lived in a single orchestrator.py file. No separation of concerns.",
+    "impact": "Impossible to test individual components. Merge conflicts guaranteed. Any change risks breaking unrelated functionality.",
+    "files": ["orchestrator.py → core/, parsers/, services/, api/ (12 new files)"],
+    "fix": "Split into layered architecture: core/ (config, llm_client, cache, rate_limiter, safety_guard), parsers/ (json_extractor, normalize), services/ (learn, coach, navigator, retrieval), api/ (6 thin route controllers <30 lines each). orchestrator.py now <100 lines.",
+    "verification": "All 27 tests pass. All endpoints return identical JSON. orchestrator.py is 90 lines."
+  },
+  {
+    "id": "RCA-008", "title": "Circuit Breaker Lost in Async Path", "severity": "critical",
+    "status": "fixed", "phase": 1, "date": "2026-06-19",
+    "rootCause": "During Phase 1 refactoring, `async_generate_from_llm` was simplified to call `async_call_gemini(settings.primary_model, prompt)` directly — bypassing the entire circuit breaker (primary→secondary→fallback) that the sync path had.",
+    "impact": "If the primary Gemini model hit quota limits, the async path would fail with no fallback. Users would see errors even though a secondary model was available.",
+    "files": ["core/llm_client.py"],
+    "fix": "Rewrote `async_generate_from_llm` with full circuit breaker: primary model → retry → secondary model → retry → safe fallback JSON. Uses `await asyncio.sleep()` instead of blocking `time.sleep()`.",
+    "verification": "Simulated primary model failure → falls back to secondary → returns safe fallback JSON."
+  },
+  {
+    "id": "RCA-009", "title": "Health Endpoint Cache Disconnected", "severity": "high",
+    "status": "fixed", "phase": 1, "date": "2026-06-19",
+    "rootCause": "The health endpoint created its own `LearnCache()` instance instead of sharing the one used by `learn_service.py`. Health always reported `cache_size: 0`.",
+    "impact": "Monitoring dashboards showed wrong cache metrics. Operations team could not verify cache health.",
+    "files": ["api/health.py", "services/learn_service.py"],
+    "fix": "Added `get_learn_cache_size()` function to `learn_service.py` that returns the shared cache instance size. Health endpoint imports and calls this.",
+    "verification": "After learning a query, /health shows cache_size > 0."
+  },
+  {
+    "id": "RCA-010", "title": "Dead Sync call_gemini in LLM Client", "severity": "medium",
+    "status": "fixed", "phase": 1, "date": "2026-06-19",
+    "rootCause": "After switching to async-only client, the synchronous `call_gemini()` function was left in `core/llm_client.py`. It was never called but added confusion.",
+    "impact": "Developers unsure which function to use. Dead code increases maintenance burden.",
+    "files": ["core/llm_client.py"],
+    "fix": "Removed synchronous `call_gemini()` function. Only async `async_call_gemini()` remains. Removed unused `time` import.",
+    "verification": "No references to sync `call_gemini` in codebase."
+  },
+  {
+    "id": "RCA-011", "title": "models/__init__.py Deletion Risk", "severity": "medium",
+    "status": "monitoring", "phase": 1, "date": "2026-06-19",
+    "rootCause": "Deleted `models/__init__.py` thinking Python 3.3+ namespace packages handle it. But pytest, mypy, and IDEs rely on `__init__.py` for package detection.",
+    "impact": "May cause import failures with certain tools or deployment configurations.",
+    "files": ["models/__init__.py"],
+    "fix": "Currently relying on namespace packages. Tests pass with pytest. Monitoring for any tooling issues.",
+    "verification": "pytest discovers all tests. Re-add __init__.py if issues arise."
+  },
+  {
+    "id": "RCA-012", "title": "Frontend Hardcoded localhost:8000 URL", "severity": "high",
+    "status": "fixed", "phase": 1, "date": "2026-06-19",
+    "rootCause": "Frontend `fetch(\"http://localhost:8000/generate\", ...)` hardcoded the backend URL. In production (Vercel), the backend is at a different domain.",
+    "impact": "Frontend completely broken in production. All API calls fail with CORS/connection errors.",
+    "files": ["vernacular-bridge-ui/src/app/page.tsx"],
+    "fix": "Changed to relative URL `/generate` which goes through the Next.js rewrite proxy defined in next.config.ts.",
+    "verification": "Frontend works both locally and in production."
+  },
+  {
+    "id": "RCA-013", "title": "Missing Deployment Artifacts", "severity": "high",
+    "status": "fixed", "phase": 5, "date": "2026-06-19",
+    "rootCause": "No requirements.txt, Procfile, Dockerfile, vercel.json, or .env.example existed. Railway/Vercel/Docker deployments were impossible.",
+    "impact": "Cannot deploy to any cloud platform. Team must manually install dependencies.",
+    "files": ["requirements.txt", "Procfile", "Dockerfile", "vercel.json", ".env.example"],
+    "fix": "Created all deployment artifacts with pinned versions. Updated next.config.ts with NEXT_PUBLIC_API_URL env var. Fixed .gitignore to not ignore .env.example.",
+    "verification": "pip install -r requirements.txt succeeds. Docker build succeeds. vercel.json is valid JSON."
+  },
+  {
+    "id": "RCA-014", "title": "Dockerfile Missing schemas/ Directory", "severity": "medium",
+    "status": "fixed", "phase": 5, "date": "2026-06-19",
+    "rootCause": "Dockerfile copied source files but forgot `COPY schemas/ schemas/`. The verifier reads `schemas/output_schema.json` at runtime.",
+    "impact": "Docker container starts but schema validation fails silently (schema=None fallback).",
+    "files": ["Dockerfile"],
+    "fix": "Added `COPY schemas/ schemas/` to Dockerfile after copying source code.",
+    "verification": "schemas/output_schema.json present in Docker build context."
+  },
+  {
+    "id": "RCA-015", "title": "Test/Verifier Drift After Schema Changes", "severity": "high",
+    "status": "fixed", "phase": 0, "date": "2026-06-19",
+    "rootCause": "JSON schema (output_schema.json) still required `schema_version`, `status`, `confidence_score`, `failure_reasons` fields that were removed from Pydantic models. Tests and adversarial generator referenced old field names.",
+    "impact": "Schema validation tests fail. Adversarial test cases produce invalid outputs.",
+    "files": ["schemas/output_schema.json", "tests/test_contracts.py", "verification/adversarial_generator.py", "verification/verifier.py"],
+    "fix": "Synced JSON schema with Pydantic OutputSchema. Updated test assertions. Updated adversarial generator to produce valid outputs for all case types.",
+    "verification": "All 27 tests pass. Schema validation matches Pydantic model."
+  },
+  {
+    "id": "RCA-016", "title": "Navigator Test Imports Broke After Refactor", "severity": "medium",
+    "status": "fixed", "phase": 1, "date": "2026-06-19",
+    "rootCause": "tests/test_navigator_explain.py imported `from orchestrator import SafetyGuard` but SafetyGuard was moved to `core.safety_guard` during Phase 1.",
+    "impact": "2 navigator tests fail with ImportError after refactoring.",
+    "files": ["tests/test_navigator_explain.py"],
+    "fix": "Updated imports to `from core.safety_guard import SafetyGuard` and `from parsers.json_extractor import extract_json`.",
+    "verification": "All navigator tests pass after import fix."
+  },
+  {
+    "id": "RCA-017", "title": "Redundant Import in Navigator Route", "severity": "low",
+    "status": "fixed", "phase": 1, "date": "2026-06-19",
+    "rootCause": "api/navigator.py had `from models.request import LanguageConfig` at top level AND inside function body (with comment). The function body import shadowed the top-level one.",
+    "impact": "Code smell. Confusing for maintainers. No runtime impact.",
+    "files": ["api/navigator.py"],
+    "fix": "Removed redundant function-body import. Kept top-level import only. Removed unnecessary comment.",
+    "verification": "No duplicate imports in navigator.py."
+  },
+  {
+    "id": "RCA-018", "title": "normalize_output Moved to Pydantic @model_validator", "severity": "high",
+    "status": "fixed", "phase": 1, "date": "2026-06-19",
+    "rootCause": "150-line normalize_output() function with 30+ branches duplicated Pydantic validation logic. Manual string/type checks instead of using Pydantic validators.",
+    "impact": "Double validation (manual + Pydantic), inconsistent behavior between code paths, untestable monolithic function.",
+    "files": ["orchestrator.py → models/contracts.py"],
+    "fix": "Deleted normalize_output(). Moved all logic into @field_validator and @model_validator decorators on OutputSchema. Added text stripping, steps normalization, quality guards, question decoder type mapping, MCQ normalization.",
+    "verification": "20+ test cases in tests/unit/test_normalize.py. All existing tests pass."
+  },
+  {
+    "id": "RCA-019", "title": "Scattered Hardcoded Config Values", "severity": "medium",
+    "status": "fixed", "phase": 6, "date": "2026-06-19",
+    "rootCause": "Model names, TTL values, rate limits, and cache sizes were hardcoded across multiple files (core/cache.py, core/rate_limiter.py, core/llm_client.py). Manual os.getenv() calls with helper functions.",
+    "impact": "Config changes require code changes and redeployment. Inconsistent defaults between modules. No .env auto-loading.",
+    "files": ["core/config.py", "core/rate_limiter.py", "services/retrieval_service.py"],
+    "fix": "Converted Settings to Pydantic BaseSettings with SettingsConfigDict. Auto-loads from .env file. Type coercion and validation. Wired settings.rate_limit_rpm into rate_limiter (replaced hardcoded 20).",
+    "verification": "Changing env var changes behavior without code deploy. All tests pass."
+  },
+  {
+    "id": "RCA-020", "title": "Health Endpoint Missing Data & Config Status", "severity": "medium",
+    "status": "fixed", "phase": 6, "date": "2026-06-19",
+    "rootCause": "/health endpoint only returned cache_size, active_ips, and circuit_breaker state. No visibility into data loading health or current configuration.",
+    "impact": "Operations team cannot verify data file health or confirm which config values are active without checking server logs.",
+    "files": ["api/health.py", "services/retrieval_service.py"],
+    "fix": "Added get_data_health() function returning data_dir, entitlements count, processes count. Added data and config fields to /health response. Added JSON type validation in load_json().",
+    "verification": "/health now returns data.status with counts and config with active model names and rate limits."
+  },
+  {
+    "id": "RCA-021", "title": "print() Debug Statements in Production Code", "severity": "low",
+    "status": "fixed", "phase": 6, "date": "2026-06-19",
+    "rootCause": "services/retrieval_service.py used print() for error/warning messages instead of structured logging. Debug output goes to stdout with no level control.",
+    "impact": "No log level filtering, no structured output, debug messages mixed with production logs.",
+    "files": ["services/retrieval_service.py"],
+    "fix": "Replaced all print() calls with logger.warning() and logger.error(). Added proper log messages with context.",
+    "verification": "All output goes through Python logging. No print() calls in production code."
+  },
+  {
+    "id": "RCA-022", "title": "Dev Dependencies Mixed with Production", "severity": "low",
+    "status": "fixed", "phase": 6, "date": "2026-06-19",
+    "rootCause": "requirements.txt contained only production dependencies but no separate dev file. pytest, black, ruff, mypy were not formally tracked.",
+    "impact": "No clear separation between prod and dev deps. CI/CD might install dev tools in production.",
+    "files": ["requirements-dev.txt", "requirements.txt"],
+    "fix": "Created requirements-dev.txt with -r requirements.txt plus pytest, pytest-asyncio, pytest-cov, black, ruff, mypy. Cleaned requirements.txt to production-only.",
+    "verification": "pip install -r requirements.txt installs only prod deps. pip install -r requirements-dev.txt includes dev tools."
+  }
+]

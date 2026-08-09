@@ -38,8 +38,6 @@ def run_verification_case(case_type: str) -> dict:
     try:
         model = OutputSchema(**data)
         result["pass_pydantic"] = True
-        result["actual_status"] = model.status.value
-        result["confidence_score"] = model.confidence_score
     except ValidationError as e:
         result["failure_reasons"].append(f"PYDANTIC: {str(e).splitlines()[0]}")
 

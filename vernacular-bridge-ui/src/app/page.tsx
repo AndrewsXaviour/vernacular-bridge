@@ -283,28 +283,54 @@ export default function Home() {
         }
       }
 
-      const response = await fetch("http://localhost:8000/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_input: text }),
-      });
+      // Fetch with AbortController timeout and exponential backoff retry
+      const MAX_RETRIES = 3;
+      const TIMEOUT_MS = 30000;
+      let lastError: Error | null = null;
 
-      if (!response.ok) throw new Error("Connection failed with intelligence bridge");
-      const rawData = await response.json();
-      if (rawData.status === "error") throw new Error(rawData.message || "Logic synthesis failed");
+      for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
-      setData({
-        tamil_simple: rawData?.tamil_simple ?? "",
-        english_academic: rawData?.english_academic ?? "",
-        steps: Array.isArray(rawData?.steps) ? rawData.steps : [],
-        question_decoder: {
-          question_type: rawData?.question_decoder?.question_type ?? "explain",
-          expected_structure: rawData?.question_decoder?.expected_structure ?? "",
-          answer_template: rawData?.question_decoder?.answer_template ?? ""
-        },
-        mcqs: Array.isArray(rawData?.mcqs) ? rawData.mcqs : []
-      });
-      setIsLoading(false);
+          const response = await fetch("/generate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_input: text }),
+            signal: controller.signal,
+          });
+          clearTimeout(timeoutId);
+
+          if (!response.ok) throw new Error("Connection failed with intelligence bridge");
+          const rawData = await response.json();
+          if (rawData.status === "error") throw new Error(rawData.message || "Logic synthesis failed");
+
+          setData({
+            tamil_simple: rawData?.tamil_simple ?? "",
+            english_academic: rawData?.english_academic ?? "",
+            steps: Array.isArray(rawData?.steps) ? rawData.steps : [],
+            question_decoder: {
+              question_type: rawData?.question_decoder?.question_type ?? "explain",
+              expected_structure: rawData?.question_decoder?.expected_structure ?? "",
+              answer_template: rawData?.question_decoder?.answer_template ?? ""
+            },
+            mcqs: Array.isArray(rawData?.mcqs) ? rawData.mcqs : []
+          });
+          setIsLoading(false);
+          return; // success, exit retry loop
+        } catch (err: any) {
+          lastError = err;
+          if (err.name === "AbortError") {
+            lastError = new Error("Connection timeout — backend may be down");
+          }
+          if (attempt < MAX_RETRIES) {
+            const delay = Math.min(1000 * Math.pow(2, attempt), 8000);
+            await new Promise(r => setTimeout(r, delay));
+          }
+        }
+      }
+      // All retries exhausted
+      throw lastError || new Error("Request failed after retries");
     } catch (err: any) {
       console.error("Engine failure:", err);
       setError(err.message || "An unexpected logic error occurred");

@@ -4,10 +4,6 @@
   "type": "object",
   "additionalProperties": false,
   "required": [
-    "schema_version",
-    "status",
-    "confidence_score",
-    "failure_reasons",
     "tamil_simple",
     "english_academic",
     "steps",
@@ -15,36 +11,19 @@
     "mcqs"
   ],
   "properties": {
-    "schema_version": {
-      "type": "string",
-      "const": "1.0"
-    },
-    "status": {
-      "type": "string",
-      "enum": ["success", "retry", "fallback"]
-    },
-    "confidence_score": {
-      "type": "number",
-      "minimum": 0,
-      "maximum": 1
-    },
-    "failure_reasons": {
-      "type": "array",
-      "items": { "type": "string" }
-    },
     "tamil_simple": {
       "type": "string",
-      "minLength": 50,
+      "minLength": 10,
       "maxLength": 800
     },
     "english_academic": {
       "type": "string",
-      "minLength": 80,
+      "minLength": 20,
       "maxLength": 1200
     },
     "steps": {
       "type": "array",
-      "minItems": 3,
+      "minItems": 2,
       "maxItems": 7,
       "items": { "type": "string" }
     },

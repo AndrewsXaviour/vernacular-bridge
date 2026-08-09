@@ -6,10 +6,13 @@ def build_concept_block(concept: str, domain: str, primary_lang: str, secondary_
     - Must produce at least 2 steps (target 4-6).
     - Must maintain strict focus on the concept.
     """
+    from core.sanitizer import sanitize_user_input, get_instruction_prefix
+    safe_concept = sanitize_user_input(concept)
     return f"""
+{get_instruction_prefix()}
 [CONCEPT_BLOCK_START]
 🎯 INPUT:
-CONCEPT: {concept}
+CONCEPT: {safe_concept}
 DOMAIN: {domain}
 
 🌐 LANGUAGE CONFIG:
@@ -110,11 +113,15 @@ def build_coach_block(question: str, student_answer: str, primary_lang: str, sec
     - Improved answer in secondary language (English academic).
     - Hidden reasoning: Evaluation performed internally but not outputted.
     """
+    from core.sanitizer import sanitize_user_input, get_instruction_prefix
+    safe_question = sanitize_user_input(question)
+    safe_answer = sanitize_user_input(student_answer)
     return f"""
+{get_instruction_prefix()}
 [COACH_BLOCK_START]
 🎯 INPUT:
-QUESTION: {question}
-STUDENT_ANSWER: {student_answer}
+QUESTION: {safe_question}
+STUDENT_ANSWER: {safe_answer}
 
 🌐 LANGUAGE CONFIG:
 Feedback Language: {primary_lang} (Tamil + English academic terms allowed)

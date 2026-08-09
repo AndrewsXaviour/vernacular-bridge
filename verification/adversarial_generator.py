@@ -2,12 +2,8 @@ import random
 import string
 
 def get_base_valid_output():
-    """Returns a baseline valid output dictionary."""
+    """Returns a baseline valid output dictionary matching OutputSchema fields."""
     return {
-        "schema_version": "1.0",
-        "status": "success",
-        "confidence_score": 0.95,
-        "failure_reasons": [],
         "tamil_simple": "இது ஒரு சாதாரண தமிழ் உரை, இது ஐம்பது எழுத்துக்களுக்கு மேல் இருக்க வேண்டும். சமூக அறிவியலில் இது முக்கியமானது.",
         "english_academic": "This is a standard academic English text that must be over eighty characters long to pass the basic constraints. It discusses fundamental concepts.",
         "steps": [
@@ -74,6 +70,8 @@ def generate_adversarial(case_type: str) -> dict:
         output["steps"] = ["Initial step.", "Initial step.", "Final step."]
         
     elif case_type == "EXTRA_FIELDS":
+        # OutputSchema uses default Pydantic extra='ignore', so extra fields
+        # are silently dropped. This tests that unknown keys don't crash validation.
         output["unauthorized_field"] = "This field should not be here."
         
     elif case_type == "RANDOM_NOISE":
@@ -88,7 +86,9 @@ def generate_adversarial(case_type: str) -> dict:
         del output["english_academic"]
 
     elif case_type == "WRONG_SCHEMA_VERSION":
-        output["schema_version"] = "2.0"
+        # schema_version was removed from OutputSchema; this is now a no-op
+        # test that verifies extra unknown fields are silently ignored.
+        pass
 
     elif case_type == "EXTREMELY_LONG_TEXT":
         output["english_academic"] = "Word " * 2000

@@ -44,6 +44,7 @@ next-env.d.ts
 .env.development.local
 .env.test.local
 .env.production.local
+!.env.example
 
 # ========================
 # OS / Editor
@@ -85,3 +86,5 @@ bb.txt
 # Generated output
 raw_llm_output.txt
 final_output.json
+nul
+

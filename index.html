@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RuralCare Connect — Learning Roadmap</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #22c55e;
+      --primary-light: #4ade80;
+      --primary-dark: #16a34a;
+      --primary-glow: rgba(34, 197, 94, 0.25);
+      --bg: #0a0a0f;
+      --bg-card: #12121a;
+      --bg-card-hover: #1a1a28;
+      --border: rgba(255,255,255,0.06);
+      --border-hover: rgba(255,255,255,0.12);
+      --text: #e4e4e7;
+      --text-muted: #71717a;
+      --text-dim: #52525b;
+      --radius: 12px;
+      --radius-lg: 20px;
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--text-dim); border-radius: 3px; }
+
+    /* ── Layout ── */
+    .app { max-width: 1320px; margin: 0 auto; padding: 0 24px 60px; }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 48px 0 32px;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 32px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 40px;
+    }
+    .hero-info { flex: 1; min-width: 280px; }
+    .hero-info h1 { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.15; }
+    .hero-info h1 span { color: var(--primary); }
+    .hero-info p { color: var(--text-muted); margin-top: 8px; font-size: 0.95rem; }
+    .hero-info .badge-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .hero-info .badge {
+      font-size: 0.75rem; font-weight: 600; padding: 4px 14px; border-radius: 100px;
+      background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2); color: var(--primary-light);
+    }
+    .hero-info .badge.alt { background: rgba(255,255,255,0.04); border-color: var(--border); color: var(--text-muted); }
+
+    /* ── Progress Ring ── */
+    .ring-wrap { position: relative; width: 120px; height: 120px; flex-shrink: 0; }
+    .ring-wrap svg { transform: rotate(-90deg); width: 120px; height: 120px; }
+    .ring-bg { fill: none; stroke: var(--border); stroke-width: 6; }
+    .ring-fg { fill: none; stroke: var(--primary); stroke-width: 6; stroke-linecap: round;
+      stroke-dasharray: 339.292; stroke-dashoffset: 339.292; transition: stroke-dashoffset 0.8s ease; }
+    .ring-label {
+      position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .ring-label .pct { font-size: 1.8rem; font-weight: 800; color: var(--primary); line-height: 1; }
+    .ring-label .sub { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    /* ── Stats Row ── */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px;
+      margin-bottom: 40px;
+    }
+    .stat-card {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 18px 20px; text-align: center;
+    }
+    .stat-card .num { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
+    .stat-card .lbl { font-size: 0.75rem; color: var(--text-dim); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* ── Filters ── */
+    .filters { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
+    .filter-btn {
+      font-size: 0.8rem; font-weight: 500; padding: 6px 18px; border-radius: 100px;
+      border: 1px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer;
+      transition: var(--transition);
+    }
+    .filter-btn:hover { border-color: var(--border-hover); color: var(--text); }
+    .filter-btn.active { background: var(--primary); border-color: var(--primary); color: #000; font-weight: 600; }
+
+    /* ── Phase Timeline ── */
+    .phases { display: flex; flex-direction: column; gap: 16px; margin-bottom: 48px; }
+
+    .phase {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg);
+      overflow: hidden; transition: var(--transition);
+    }
+    .phase:hover { border-color: var(--border-hover); }
+    .phase.done { border-left: 3px solid var(--primary); }
+    .phase.active { border-left: 3px solid var(--primary); }
+
+    .phase-header {
+      display: flex; align-items: center; gap: 16px; padding: 18px 22px;
+      cursor: pointer; user-select: none;
+    }
+    .phase-num {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; font-weight: 700;
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--text-dim);
+      transition: var(--transition);
+    }
+    .phase.done .phase-num, .phase.active .phase-num {
+      background: var(--primary); border-color: var(--primary); color: #000;
+    }
+    .phase-info { flex: 1; min-width: 0; }
+    .phase-info .title { font-size: 1.05rem; font-weight: 700; }
+    .phase-info .sub { font-size: 0.78rem; color: var(--text-dim); margin-top: 1px; }
+    .phase-check { flex-shrink: 0; }
+    .phase-check input[type="checkbox"] {
+      width: 20px; height: 20px; accent-color: var(--primary); cursor: pointer;
+      border-radius: 4px; border: 2px solid var(--text-dim);
+    }
+    .phase-arrow { flex-shrink: 0; color: var(--text-dim); transition: transform 0.3s ease; font-size: 1.2rem; }
+    .phase.open .phase-arrow { transform: rotate(180deg); }
+
+    /* ── Phase Body ── */
+    .phase-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+    .phase.open .phase-body { max-height: 2000px; }
+    .phase-body-inner { padding: 0 22px 22px; border-top: 1px solid var(--border); padding-top: 18px; }
+
+    .topic-list { display: flex; flex-direction: column; gap: 8px; }
+    .topic-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 0.88rem; color: var(--text-muted); padding: 4px 0;
+    }
+    .topic-item input[type="checkbox"] {
+      width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer;
+      margin-top: 3px; flex-shrink: 0;
+    }
+    .topic-item label { cursor: pointer; flex: 1; }
+    .topic-item label.done { text-decoration: line-through; opacity: 0.5; }
+    .topic-item .file-link {
+      font-size: 0.7rem; color: var(--primary); opacity: 0.7; margin-left: 8px;
+      text-decoration: none; white-space: nowrap;
+    }
+    .topic-item .file-link:hover { opacity: 1; text-decoration: underline; }
+    .topic-item .mini-project {
+      display: block; font-size: 0.75rem; color: var(--text-dim); margin-top: 2px;
+    }
+
+    /* ── Quick Reference ── */
+    .section-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; margin-top: 48px; }
+    .ref-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+    .ref-tab {
+      font-size: 0.8rem; font-weight: 500; padding: 6px 16px; border-radius: 100px;
+      border: 1px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer;
+      transition: var(--transition);
+    }
+    .ref-tab:hover { border-color: var(--border-hover); color: var(--text); }
+    .ref-tab.active { background: var(--primary); border-color: var(--primary); color: #000; }
+
+    .ref-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+    .ref-card {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 16px 18px; display: none; flex-direction: column; gap: 6px;
+    }
+    .ref-card.visible { display: flex; }
+    .ref-card code {
+      font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.82rem;
+      background: rgba(255,255,255,0.04); padding: 2px 8px; border-radius: 4px;
+      color: var(--primary-light); word-break: break-all;
+    }
+    .ref-card .desc { font-size: 0.78rem; color: var(--text-dim); }
+    .ref-card .copy-btn {
+      align-self: flex-end; font-size: 0.7rem; padding: 2px 12px; border-radius: 4px;
+      border: 1px solid var(--border); background: transparent; color: var(--text-muted);
+      cursor: pointer; transition: var(--transition);
+    }
+    .ref-card .copy-btn:hover { background: var(--primary); color: #000; border-color: var(--primary); }
+
+    /* ── Projects ── */
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+    .project-card {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg);
+      padding: 22px; transition: var(--transition); cursor: default;
+    }
+    .project-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+    .project-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .project-card p { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px; }
+    .project-card .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .project-card .tags span {
+      font-size: 0.7rem; font-weight: 500; padding: 2px 10px; border-radius: 100px;
+      background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.15); color: var(--primary-light);
+    }
+    .project-card .diff {
+      font-size: 0.7rem; font-weight: 600; color: var(--text-dim); text-transform: uppercase;
+    }
+
+    /* ── Buttons ── */
+    .btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border); }
+    .btn {
+      font-size: 0.85rem; font-weight: 600; padding: 10px 24px; border-radius: var(--radius);
+      border: none; cursor: pointer; transition: var(--transition); font-family: inherit;
+    }
+    .btn-primary { background: var(--primary); color: #000; }
+    .btn-primary:hover { background: var(--primary-light); box-shadow: 0 0 24px var(--primary-glow); }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-muted); }
+    .btn-outline:hover { border-color: var(--border-hover); color: var(--text); }
+    .btn-danger { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: #ef4444; }
+    .btn-danger:hover { background: rgba(239,68,68,0.2); }
+
+    /* ── Toast ── */
+    .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
+    .toast {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 12px 20px; font-size: 0.85rem; box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      animation: slideUp 0.3s ease; display: flex; align-items: center; gap: 10px;
+    }
+    .toast.success { border-left: 3px solid var(--primary); }
+    .toast.error { border-left: 3px solid #ef4444; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .hero { flex-direction: column-reverse; align-items: flex-start; padding: 28px 0 20px; }
+      .hero-info h1 { font-size: 1.6rem; }
+      .ring-wrap { width: 80px; height: 80px; }
+      .ring-wrap svg { width: 80px; height: 80px; }
+      .ring-label .pct { font-size: 1.2rem; }
+      .phase-header { padding: 14px 16px; gap: 12px; }
+      .phase-body-inner { padding: 0 16px 16px; }
+      .app { padding: 0 16px 40px; }
+      .ref-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app" id="app">
+
+  <!-- ─── HERO ─── -->
+  <header class="hero">
+    <div class="hero-info">
+      <h1>RuralCare Connect<br/><span>Learning Roadmap</span></h1>
+      <p>Master every technology in this full-stack healthcare app — from Tailwind CSS to Firebase, React to Razorpay.</p>
+      <div class="badge-row">
+        <span class="badge">9 Phases</span>
+        <span class="badge">22 Topics</span>
+        <span class="badge">7 Projects</span>
+        <span class="badge alt">9 Weeks</span>
+        <span class="badge alt">🔥 Self-paced</span>
+      </div>
+    </div>
+    <div class="ring-wrap">
+      <svg viewBox="0 0 120 120">
+        <circle class="ring-bg" cx="60" cy="60" r="54"/>
+        <circle class="ring-fg" id="progressRing" cx="60" cy="60" r="54"/>
+      </svg>
+      <div class="ring-label">
+        <span class="pct" id="pctDisplay">0%</span>
+        <span class="sub">Complete</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── STATS ─── -->
+  <div class="stats-row" id="statsRow">
+    <div class="stat-card"><div class="num" id="phasesDone">0</div><div class="lbl">Phases Done</div></div>
+    <div class="stat-card"><div class="num" id="topicsDone">0</div><div class="lbl">Topics</div></div>
+    <div class="stat-card"><div class="num" id="weeksSpan">0</div><div class="lbl">Weeks Range</div></div>
+  </div>
+
+  <!-- ─── FILTERS ─── -->
+  <div class="filters" id="filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="done">Completed</button>
+    <button class="filter-btn" data-filter="active">In Progress</button>
+    <button class="filter-btn" data-filter="todo">Not Started</button>
+  </div>
+
+  <!-- ─── PHASES ─── -->
+  <div class="phases" id="phasesContainer"></div>
+
+  <!-- ─── QUICK REFERENCE ─── -->
+  <h2 class="section-title">📚 Quick Reference</h2>
+  <div class="ref-tabs" id="refTabs">
+    <button class="ref-tab active" data-tab="tailwind">Tailwind</button>
+    <button class="ref-tab" data-tab="shadcn">shadcn/ui</button>
+    <button class="ref-tab" data-tab="firebase">Firebase Auth</button>
+    <button class="ref-tab" data-tab="vite">Vite Env</button>
+    <button class="ref-tab" data-tab="framer">Framer Motion</button>
+  </div>
+  <div class="ref-grid" id="refGrid"></div>
+
+  <!-- ─── LEARNING PROJECTS ─── -->
+  <h2 class="section-title">🎯 Learning Projects</h2>
+  <div class="projects-grid" id="projectsGrid"></div>
+
+  <!-- ─── ACTIONS ─── -->
+  <div class="btn-row">
+    <button class="btn btn-primary" id="saveBtn">💾 Save Progress</button>
+    <button class="btn btn-outline" id="exportBtn">📤 Export</button>
+    <button class="btn btn-danger" id="resetBtn">🗑 Reset All</button>
+  </div>
+</div>
+
+<!-- ─── TOAST CONTAINER ─── -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════════════
+const DATA = {
+  phases: [
+    { id: 1, title: "Foundation", range: "Week 1–2", weeks: 2,
+      topics: [
+        { id: "html", label: "HTML5 & CSS3 (Flexbox, Grid, Responsive)", file: "index.html", project: "Profile Card" },
+        { id: "ts", label: "TypeScript (types, interfaces, generics)", file: "src/lib/mockData.ts", project: "Todo with types" },
+      ] },
+    { id: 2, title: "Styling & UI", range: "Week 2–3", weeks: 1,
+      topics: [
+        { id: "tw", label: "Tailwind CSS (utility classes, custom config)", file: "tailwind.config.ts", project: "Button variants" },
+        { id: "shadcn", label: "shadcn/ui (Button, Card, Calendar, Popover)", file: "src/components/ui/", project: "Date picker demo" },
+        { id: "icons", label: "Lucide Icons", file: "lucide-react docs", project: "Icon showcase" },
+        { id: "framer", label: "Framer Motion (variants, AnimatePresence)", file: "src/pages/HospitalsPage.tsx", project: "Staggered list" },
+      ] },
+    { id: 3, title: "React Core", range: "Week 3–5", weeks: 2,
+      topics: [
+        { id: "react", label: "React 18 (useState, useEffect, useMemo)", file: "src/pages/DoctorsPage.tsx", project: "Interactive counter" },
+        { id: "router", label: "React Router v6 (useParams, useNavigate)", file: "src/App.tsx", project: "Multi-page app" },
+        { id: "hooks", label: "Custom Hooks (useNearbyHospitals)", file: "src/hooks/useNearbyHospitals.ts", project: "Custom fetch hook" },
+        { id: "context", label: "Context API (AuthContext)", file: "src/hooks/useAuthContext.ts", project: "Theme context" },
+      ] },
+    { id: 4, title: "Backend & Services", range: "Week 5–7", weeks: 2,
+      topics: [
+        { id: "firebase-auth", label: "Firebase Auth (Phone OTP, Google, Email)", file: "src/lib/firebaseAuth.ts", project: "Login page clone" },
+        { id: "firestore", label: "Firebase Firestore (CRUD)", file: "src/lib/firebaseDb.ts", project: "Notes app" },
+        { id: "firebase-fn", label: "Firebase Cloud Functions", file: "functions/src/index.ts", project: "Serverless API" },
+        { id: "supabase", label: "Supabase (PostgreSQL, Auth)", file: "src/lib/supabase.ts", project: "Real-time chat" },
+        { id: "tanstack", label: "TanStack React Query", file: "src/hooks/useNearbyHospitals.ts", project: "Cached API list" },
+      ] },
+    { id: 5, title: "APIs & Integrations", range: "Week 6–8", weeks: 2,
+      topics: [
+        { id: "gemini", label: "Gemini AI (chat assistant)", file: "src/lib/gemini.ts", project: "Chat UI" },
+        { id: "overpass", label: "OpenStreetMap Overpass API", file: "src/lib/hospitalScraper.ts", project: "Map markers" },
+        { id: "nominatim", label: "Nominatim Geocoding", file: "src/pages/HospitalsPage.tsx", project: "Search → coords" },
+        { id: "razorpay", label: "Razorpay payments", file: "src/lib/razorpay.ts", project: "Payment button" },
+        { id: "env", label: "Environment Variables (VITE_ prefix)", file: ".env", project: "Config loader" },
+      ] },
+    { id: 6, title: "Tooling & DX", range: "Week 7", weeks: 1,
+      topics: [
+        { id: "vite", label: "Vite + SWC bundler", file: "vite.config.ts", project: "Scaffold a Vite project" },
+        { id: "forms", label: "react-hook-form + zod validation", file: "src/pages/SignupPage.tsx", project: "Form with validation" },
+        { id: "eslint", label: "ESLint + TypeScript", file: "eslint.config.js", project: "Fix lint errors" },
+      ] },
+    { id: 7, title: "Testing", range: "Week 8", weeks: 1,
+      topics: [
+        { id: "vitest", label: "Vitest unit tests", file: "vitest.config.ts", project: "Test a utility" },
+        { id: "playwright", label: "Playwright E2E tests", file: "playwright.config.ts", project: "Login flow test" },
+      ] },
+    { id: 8, title: "Production Features", range: "Week 8–9", weeks: 1,
+      topics: [
+        { id: "sentry", label: "Sentry error tracking", file: "src/main.tsx", project: "Log a custom error" },
+        { id: "vitals", label: "Web Vitals (LCP, CLS, FCP)", file: "src/main.tsx", project: "Performance dashboard" },
+        { id: "offline", label: "Offline queue", file: "src/lib/offlineQueue.ts", project: "Offline form" },
+      ] },
+    { id: 9, title: "Architecture Patterns", range: "Ongoing", weeks: 0,
+      topics: [
+        { id: "pattern-fallback", label: "Fallback chain (AWS → Overpass → Mock)", file: "src/lib/hospitalScraper.ts", project: "Retry logic" },
+        { id: "pattern-local", label: "Local-first storage", file: "src/lib/store.ts", project: "Offline CRUD" },
+        { id: "pattern-context", label: "Context + Provider pattern", file: "src/hooks/useAuthContext.ts", project: "Feature flags" },
+      ] },
+  ],
+  refs: {
+    tailwind: [
+      { code: "p-4", desc: "padding: 1rem (16px)" },
+      { code: "flex items-center gap-3", desc: "Centered flex row with gap" },
+      { code: "grid grid-cols-3 gap-4", desc: "3-column responsive grid" },
+      { code: "bg-secondary text-primary", desc: "Theme-aware colors from CSS vars" },
+      { code: "sm:flex-row flex-col", desc: "Responsive: column → row on desktop" },
+      { code: "hover:scale-105 transition", desc: "Hover scale animation" },
+    ],
+    shadcn: [
+      { code: "npx shadcn@latest add button card dialog popover calendar", desc: "Add components" },
+      { code: "<Button variant=\"outline\">Click</Button>", desc: "Button with variants" },
+      { code: "<Card><CardHeader><CardTitle>Title</CardTitle></CardHeader></Card>", desc: "Card layout" },
+      { code: "<Dialog> + <DialogTrigger> + <DialogContent>", desc: "Modal dialog" },
+      { code: "<Popover> + <PopoverTrigger> + <PopoverContent>", desc: "Date picker wrapper" },
+      { code: "toast.success('Done!')", desc: "Sonner toast notification" },
+    ],
+    firebase: [
+      { code: "new RecaptchaVerifier(auth, 'recaptcha-container', { size: 'invisible' })", desc: "Bot protection init" },
+      { code: "signInWithPhoneNumber(auth, phone, verifier)", desc: "Send OTP SMS" },
+      { code: "confirmation.confirm(otp)", desc: "Verify 6-digit OTP" },
+      { code: "signInWithPopup(auth, googleProvider)", desc: "Google sign-in" },
+      { code: "createUserWithEmailAndPassword(auth, email, password)", desc: "Email sign-up" },
+    ],
+    vite: [
+      { code: "import.meta.env.VITE_FIREBASE_API_KEY", desc: "Access env variable in client" },
+      { code: "VITE_ prefix required for client vars", desc: "Prefix rule" },
+      { code: "import.meta.env.DEV  // true in dev", desc: "Environment detection" },
+      { code: "import.meta.env.PROD // true in build", desc: "Production check" },
+    ],
+    framer: [
+      { code: "<motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}>", desc: "Mount/unmount animation" },
+      { code: "variants={{ hidden: {}, show: {} }}  initial=\"hidden\" animate=\"show\"", desc: "Variants pattern" },
+      { code: "transition={{ type: 'spring', stiffness: 400, damping: 30 }}", desc: "Spring animation" },
+      { code: "<AnimatePresence> → <motion.div key={id}>", desc: "List enter/exit" },
+    ],
+  },
+  projects: [
+    { name: "Todo App", desc: "Add, complete, delete tasks with local persistence", tags: ["React", "TypeScript", "Tailwind", "shadcn"], diff: "Beginner" },
+    { name: "Weather Dashboard", desc: "Fetch weather API, display charts, cache results", tags: ["API", "TanStack Query", "recharts"], diff: "Intermediate" },
+    { name: "Auth Page", desc: "Phone OTP + Google sign-in with form validation", tags: ["Firebase Auth", "react-hook-form", "zod"], diff: "Intermediate" },
+    { name: "Calendar Booking", desc: "Date picker with time slots, book/cancel flow", tags: ["shadcn Calendar", "Popover", "date-fns"], diff: "Intermediate" },
+    { name: "E-commerce Cart", desc: "Add to cart, checkout with Razorpay", tags: ["Context API", "Razorpay", "Payments"], diff: "Advanced" },
+    { name: "Chat UI", desc: "AI chat interface with streaming messages", tags: ["Gemini API", "Framer Motion", "Async"], diff: "Advanced" },
+    { name: "Dashboard", desc: "Charts, cards, tabs with dark mode toggle", tags: ["recharts", "shadcn Card", "Dark Mode"], diff: "Intermediate" },
+  ]
+};
+
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+let state = loadState();
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem("learning_roadmap");
+    if (saved) return JSON.parse(saved);
+  } catch {}
+  return { phaseDone: [], topicDone: [], filter: "all" };
+}
+
+function saveState() {
+  localStorage.setItem("learning_roadmap", JSON.stringify(state));
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════════════════
+
+function render() {
+  renderPhases();
+  updateStatsAndRing();
+  renderRefs();
+  renderProjects();
+}
+
+/* ─── Phases ─── */
+function renderPhases() {
+  const container = document.getElementById("phasesContainer");
+  container.innerHTML = "";
+  let visibleCount = 0;
+
+  DATA.phases.forEach((phase, idx) => {
+    const isDone = state.phaseDone.includes(phase.id);
+    const doneTopics = phase.topics.filter(t => state.topicDone.includes(t.id)).length;
+    const isActive = doneTopics > 0 && doneTopics < phase.topics.length;
+    const status = isDone ? "done" : isActive ? "active" : "todo";
+
+    if (state.filter !== "all" && state.filter !== status) return;
+    visibleCount++;
+
+    const el = document.createElement("div");
+    el.className = `phase ${status}`;
+    el.id = `phase-${phase.id}`;
+
+    el.innerHTML = `
+      <div class="phase-header" onclick="togglePhase(${phase.id})">
+        <div class="phase-num">${phase.id}</div>
+        <div class="phase-info">
+          <div class="title">${phase.title}</div>
+          <div class="sub">${phase.range} · ${doneTopics}/${phase.topics.length} topics</div>
+        </div>
+        <div class="phase-check">
+          <input type="checkbox" ${isDone ? "checked" : ""} onchange="togglePhaseDone(${phase.id})" title="Mark phase complete" />
+        </div>
+        <div class="phase-arrow">▾</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-body-inner">
+          <div class="topic-list">
+            ${phase.topics.map(t => `
+              <div class="topic-item">
+                <input type="checkbox" id="topic-${t.id}" ${state.topicDone.includes(t.id) ? "checked" : ""} onchange="toggleTopic('${t.id}', ${phase.id})" />
+                <label for="topic-${t.id}" class="${state.topicDone.includes(t.id) ? 'done' : ''}">
+                  ${t.label}
+                  <a class="file-link" href="#" onclick="event.stopPropagation(); showToast('File: ${t.file}', 'success')">${t.file}</a>
+                  <span class="mini-project">⚡ Mini project: ${t.project}</span>
+                </label>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      </div>
+    `;
+    container.appendChild(el);
+  });
+
+  if (visibleCount === 0) {
+    container.innerHTML = `<p style="color:var(--text-dim);text-align:center;padding:40px 0;">No phases match the current filter.</p>`;
+  }
+}
+
+/* ─── Refs ─── */
+function renderRefs() {
+  const activeTab = document.querySelector(".ref-tab.active")?.dataset.tab || "tailwind";
+  const grid = document.getElementById("refGrid");
+  grid.innerHTML = "";
+
+  (DATA.refs[activeTab] || []).forEach(r => {
+    const card = document.createElement("div");
+    card.className = "ref-card visible";
+    card.innerHTML = `
+      <code>${r.code}</code>
+      <div class="desc">${r.desc}</div>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+/* ─── Projects ─── */
+function renderProjects() {
+  const grid = document.getElementById("projectsGrid");
+  grid.innerHTML = "";
+  DATA.projects.forEach(p => {
+    const card = document.createElement("div");
+    card.className = "project-card";
+    card.innerHTML = `
+      <h4>${p.name}</h4>
+      <p>${p.desc}</p>
+      <div class="tags">${p.tags.map(t => `<span>${t}</span>`).join("")}</div>
+      <div class="diff">${p.diff}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// STATS & RING
+// ═══════════════════════════════════════════════════════════════
+function updateStatsAndRing() {
+  const totalPhases = DATA.phases.length;
+  const donePhases = state.phaseDone.length;
+  const allTopics = DATA.phases.flatMap(p => p.topics);
+  const totalTopics = allTopics.length;
+  const doneTopics = state.topicDone.length;
+  const pct = totalTopics === 0 ? 0 : Math.round((doneTopics / totalTopics) * 100);
+
+  document.getElementById("phasesDone").textContent = donePhases;
+  document.getElementById("topicsDone").textContent = `${doneTopics} / ${totalTopics}`;
+  document.getElementById("weeksSpan").textContent = DATA.phases.reduce((s, p) => s + p.weeks, 0);
+
+  // Ring
+  const circumference = 339.292;
+  const offset = circumference - (pct / 100) * circumference;
+  document.getElementById("progressRing").style.strokeDashoffset = offset;
+  document.getElementById("pctDisplay").textContent = `${pct}%`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ACTIONS
+// ═══════════════════════════════════════════════════════════════
+window.togglePhase = function(id) {
+  const el = document.getElementById(`phase-${id}`);
+  el.classList.toggle("open");
+};
+
+window.togglePhaseDone = function(id) {
+  const phase = DATA.phases.find(p => p.id === id);
+  const idx = state.phaseDone.indexOf(id);
+  if (idx > -1) {
+    state.phaseDone.splice(idx, 1);
+    phase.topics.forEach(t => {
+      const ti = state.topicDone.indexOf(t.id);
+      if (ti > -1) state.topicDone.splice(ti, 1);
+    });
+  } else {
+    state.phaseDone.push(id);
+    phase.topics.forEach(t => {
+      if (!state.topicDone.includes(t.id)) state.topicDone.push(t.id);
+    });
+  }
+  saveState();
+  render();
+};
+
+window.toggleTopic = function(topicId, phaseId) {
+  const idx = state.topicDone.indexOf(topicId);
+  if (idx > -1) state.topicDone.splice(idx, 1);
+  else state.topicDone.push(topicId);
+
+  // Auto-update phase done
+  const phase = DATA.phases.find(p => p.id === phaseId);
+  const allDone = phase.topics.every(t => state.topicDone.includes(t.id));
+  const pid = state.phaseDone.indexOf(phaseId);
+  if (allDone && pid === -1) state.phaseDone.push(phaseId);
+  if (!allDone && pid > -1) state.phaseDone.splice(pid, 1);
+
+  saveState();
+  render();
+};
+
+window.copyCode = function(btn) {
+  const code = btn.previousElementSibling.previousElementSibling.textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = "Copied!";
+    setTimeout(() => (btn.textContent = "Copy"), 1500);
+  });
+};
+
+function showToast(msg, type = "success") {
+  const container = document.getElementById("toastContainer");
+  const t = document.createElement("div");
+  t.className = `toast ${type}`;
+  t.textContent = msg;
+  container.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// FILTERS
+// ═══════════════════════════════════════════════════════════════
+document.getElementById("filters").addEventListener("click", (e) => {
+  const btn = e.target.closest(".filter-btn");
+  if (!btn) return;
+  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  state.filter = btn.dataset.filter;
+  render();
+});
+
+// ═══════════════════════════════════════════════════════════════
+// REF TABS
+// ═══════════════════════════════════════════════════════════════
+document.getElementById("refTabs").addEventListener("click", (e) => {
+  const btn = e.target.closest(".ref-tab");
+  if (!btn) return;
+  document.querySelectorAll(".ref-tab").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  renderRefs();
+});
+
+// ═══════════════════════════════════════════════════════════════
+// BUTTONS
+// ═══════════════════════════════════════════════════════════════
+document.getElementById("saveBtn").addEventListener("click", () => {
+  saveState();
+  showToast("Progress saved to browser!", "success");
+});
+
+document.getElementById("exportBtn").addEventListener("click", () => {
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "learning_progress.json";
+  a.click();
+  showToast("Progress exported!", "success");
+});
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+  if (confirm("Reset all progress? This cannot be undone.")) {
+    state = { phaseDone: [], topicDone: [], filter: "all" };
+    localStorage.removeItem("learning_roadmap");
+    render();
+    showToast("Progress reset", "error");
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+render();
+
+// Open first phase by default
+document.getElementById("phase-1")?.classList.add("open");
+</script>
+</body>
+</html>

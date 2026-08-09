@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vernacular Bridge — Interview Prep Arena</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0b0e;
+    --bg2: #111318;
+    --bg3: #181b22;
+    --card: #14171d;
+    --card-hover: #1a1e26;
+    --border: #1e2330;
+    --border-active: #2d3548;
+    --text: #e8eaed;
+    --text2: #9aa0a6;
+    --text3: #5f6368;
+    --grn: #00c853;
+    --grn-dim: rgba(0,200,83,0.08);
+    --grn-brd: rgba(0,200,83,0.2);
+    --amb: #ffab00;
+    --amb-dim: rgba(255,171,0,0.08);
+    --red: #ff1744;
+    --red-dim: rgba(255,23,68,0.08);
+    --blu: #2979ff;
+    --blu-dim: rgba(41,121,255,0.08);
+    --purp: #d500f9;
+    --purp-dim: rgba(213,0,249,0.08);
+    --cya: #00e5ff;
+    --cya-dim: rgba(0,229,255,0.08);
+    --rad-sm: 6px;
+    --rad-md: 10px;
+    --rad-lg: 16px;
+    --rad-xl: 24px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.3);
+    --font: 'Inter', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  html { font-size: 14px; scroll-behavior: smooth; }
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg2); }
+  ::-webkit-scrollbar-thumb { background: var(--border-active); border-radius: 2px; }
+
+  /* === TOP BAR === */
+  .topbar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,11,14,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 14px; }
+  .topbar-logo {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--grn), var(--cya));
+    border-radius: var(--rad-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 900; color: #000;
+  }
+  .topbar-title { font-size: 16px; font-weight: 800; letter-spacing: -0.3px; }
+  .topbar-title span { color: var(--grn); }
+  .topbar-badge {
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 100px;
+    background: var(--grn-dim); color: var(--grn);
+    border: 1px solid var(--grn-brd);
+    letter-spacing: 0.5px;
+  }
+  .topbar-right { display: flex; align-items: center; gap: 16px; }
+  .topbar-stat { font-size: 11px; color: var(--text2); display: flex; align-items: center; gap: 6px; }
+  .topbar-stat strong { color: var(--text); font-size: 13px; }
+  .topbar-progress {
+    width: 100px; height: 4px;
+    background: var(--bg3); border-radius: 2px; overflow: hidden;
+  }
+  .topbar-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--grn), var(--cya));
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  /* === FILTER BAR === */
+  .filterbar {
+    position: sticky; top: 57px; z-index: 99;
+    background: rgba(10,11,14,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 24px;
+    display: flex; align-items: center; gap: 10px;
+    overflow-x: auto;
+  }
+  .filterbar::-webkit-scrollbar { height: 2px; }
+  .filter-chip {
+    flex-shrink: 0;
+    padding: 5px 14px;
+    border-radius: 100px;
+    font-size: 10px; font-weight: 700;
+    border: 1px solid var(--border);
+    background: var(--bg3);
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .filter-chip:hover { border-color: var(--border-active); color: var(--text); }
+  .filter-chip.active { background: var(--grn-dim); color: var(--grn); border-color: var(--grn-brd); }
+  .filter-chip.part-a { border-color: rgba(41,121,255,0.3); }
+  .filter-chip.part-a.active { background: var(--blu-dim); color: var(--blu); border-color: var(--blu); }
+  .filter-chip.part-b { border-color: rgba(255,171,0,0.3); }
+  .filter-chip.part-b.active { background: var(--amb-dim); color: var(--amb); border-color: var(--amb); }
+  .filter-chip.part-c { border-color: rgba(213,0,249,0.3); }
+  .filter-chip.part-c.active { background: var(--purp-dim); color: var(--purp); border-color: var(--purp); }
+  .filter-search {
+    flex: 1; min-width: 120px;
+    padding: 5px 12px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: var(--bg3);
+    color: var(--text);
+    font-size: 11px;
+    font-family: var(--font);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .filter-search:focus { border-color: var(--grn); }
+  .filter-search::placeholder { color: var(--text3); }
+
+  /* === MAIN === */
+  .main { padding: 20px 24px; max-width: 1400px; margin: 0 auto; }
+
+  /* === PART HEADER === */
+  .part-header {
+    display: flex; align-items: center; gap: 12px;
+    margin: 24px 0 16px; padding: 0 4px;
+  }
+  .part-header:first-of-type { margin-top: 0; }
+  .part-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+  .part-dot.a { background: var(--blu); }
+  .part-dot.b { background: var(--amb); }
+  .part-dot.c { background: var(--purp); }
+  .part-label { font-size: 14px; font-weight: 800; letter-spacing: -0.3px; }
+  .part-count { font-size: 10px; color: var(--text3); font-family: var(--mono); }
+  .part-divider { flex: 1; height: 1px; background: var(--border); }
+
+  /* === GRID === */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 10px;
+  }
+  .grid.hidden { display: none; }
+
+  /* === BYTE CARD === */
+  .byte {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--rad-lg);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+    position: relative;
+  }
+  .byte:hover {
+    background: var(--card-hover);
+    border-color: var(--border-active);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  .byte.mastered { border-color: var(--grn-brd); }
+  .byte.mastered .byte-top-left { background: var(--grn-dim); }
+  .byte.struggled { border-color: rgba(255,23,68,0.2); }
+  
+  .byte-top {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .byte-top-left {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 4px;
+    background: var(--bg3);
+  }
+  .byte-id { font-family: var(--mono); color: var(--text3); }
+  .byte-part {
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .byte-part.a { color: var(--blu); }
+  .byte-part.b { color: var(--amb); }
+  .byte-part.c { color: var(--purp); }
+  .byte-top-right {
+    display: flex; align-items: center; gap: 4px;
+  }
+  .byte-status {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--text3);
+  }
+  .byte-status.mastered { background: var(--grn); }
+  .byte-status.studying { background: var(--amb); }
+
+  .byte-question {
+    padding: 12px 14px 10px;
+    font-size: 12.5px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--text);
+    min-height: 48px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .byte-answer {
+    padding: 0 14px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.35s ease;
+  }
+  .byte.expanded .byte-answer {
+    max-height: 600px;
+    padding: 0 14px 16px;
+  }
+  .byte-answer-text {
+    font-size: 11.5px;
+    line-height: 1.7;
+    color: var(--text2);
+    border-left: 2px solid var(--border-active);
+    padding-left: 12px;
+  }
+  .byte-answer-text strong { color: var(--grn); font-weight: 600; }
+  .byte-answer-text code {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    background: var(--bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--cya);
+  }
+
+  .byte-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 14px 10px;
+    border-top: 1px solid var(--border);
+    font-size: 9.5px;
+    color: var(--text3);
+  }
+  .byte-actions { display: flex; gap: 6px; }
+  .byte-btn {
+    padding: 3px 10px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: var(--bg3);
+    color: var(--text2);
+    font-size: 9px; font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: var(--font);
+  }
+  .byte-btn:hover { border-color: var(--border-active); color: var(--text); }
+  .byte-btn.mastered { background: var(--grn-dim); color: var(--grn); border-color: var(--grn-brd); }
+  .byte-btn.struggled { background: var(--red-dim); color: var(--red); border-color: rgba(255,23,68,0.2); }
+
+  /* === STATS BAR === */
+  .stats-bar {
+    display: flex; gap: 20px; align-items: center;
+    padding: 14px 18px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--rad-lg);
+    margin-bottom: 24px;
+  }
+  .stat-item { display: flex; align-items: center; gap: 8px; }
+  .stat-icon { font-size: 16px; }
+  .stat-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.3px; }
+  .stat-value { font-size: 18px; font-weight: 800; font-family: var(--mono); }
+  .stat-value.grn { color: var(--grn); }
+  .stat-value.amb { color: var(--amb); }
+  .stat-value.blu { color: var(--blu); }
+  .stat-value.red { color: var(--red); }
+  .stat-divider { width: 1px; height: 32px; background: var(--border); }
+
+  /* === STUDY MODE === */
+  .study-mode {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--bg);
+    z-index: 200;
+    display: none;
+    flex-direction: column;
+  }
+  .study-mode.active { display: flex; }
+  .study-topbar {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .study-back {
+    padding: 6px 14px;
+    border-radius: var(--rad-sm);
+    border: 1px solid var(--border);
+    background: var(--bg3);
+    color: var(--text);
+    font-size: 11px; font-weight: 700;
+    cursor: pointer;
+    font-family: var(--font);
+    transition: all 0.15s;
+  }
+  .study-back:hover { border-color: var(--border-active); }
+  .study-progress-text { font-size: 11px; color: var(--text2); font-family: var(--mono); }
+  .study-body {
+    flex: 1;
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px;
+    overflow-y: auto;
+  }
+  .study-card {
+    max-width: 680px;
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--rad-xl);
+    padding: 40px;
+    animation: fadeUp 0.3s ease;
+  }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .study-card-tag {
+    display: inline-block;
+    font-size: 10px; font-weight: 700;
+    padding: 3px 10px; border-radius: 4px;
+    margin-bottom: 16px;
+  }
+  .study-card-tag.a { background: var(--blu-dim); color: var(--blu); }
+  .study-card-tag.b { background: var(--amb-dim); color: var(--amb); }
+  .study-card-tag.c { background: var(--purp-dim); color: var(--purp); }
+  .study-card-question {
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.5;
+    margin-bottom: 24px;
+    letter-spacing: -0.3px;
+  }
+  .study-card-answer {
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: var(--text2);
+    margin-bottom: 28px;
+    border-left: 3px solid var(--grn);
+    padding-left: 18px;
+  }
+  .study-card-answer strong { color: var(--grn); }
+  .study-card-answer code {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: var(--bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--cya);
+  }
+  .study-actions {
+    display: flex; gap: 10px;
+  }
+  .study-btn {
+    flex: 1;
+    padding: 12px 20px;
+    border-radius: var(--rad-md);
+    border: none;
+    font-size: 12px; font-weight: 700;
+    cursor: pointer;
+    font-family: var(--font);
+    transition: all 0.15s;
+  }
+  .study-btn:hover { transform: translateY(-1px); }
+  .study-btn.grn { background: var(--grn); color: #000; }
+  .study-btn.amb { background: var(--amb); color: #000; }
+  .study-btn.red { background: var(--red); color: #fff; }
+  .study-btn.outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+  .study-btn.outline:hover { border-color: var(--border-active); }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 768px) {
+    .topbar { padding: 10px 16px; flex-wrap: wrap; gap: 8px; }
+    .topbar-title { font-size: 14px; }
+    .filterbar { padding: 8px 16px; }
+    .main { padding: 12px 16px; }
+    .grid { grid-template-columns: 1fr; }
+    .stats-bar { flex-wrap: wrap; gap: 12px; }
+    .stat-divider { display: none; }
+    .study-card { padding: 24px; }
+    .study-card-question { font-size: 16px; }
+    .study-actions { flex-wrap: wrap; }
+  }
+
+  /* === ANIMATIONS === */
+  @keyframes shimmer {
+    0% { background-position: -200px 0; }
+    100% { background-position: 200px 0; }
+  }
+  .byte.loading .byte-question {
+    background: linear-gradient(90deg, var(--bg3) 25%, var(--card-hover) 50%, var(--bg3) 75%);
+    background-size: 200px 100%;
+    animation: shimmer 1.5s ease infinite;
+    color: transparent;
+    border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== TOPBAR ===== -->
+<header class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo">VB</div>
+    <div class="topbar-title">Interview <span>Arena</span></div>
+    <span class="topbar-badge">125 mini bytes</span>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-stat">
+      <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--grn);margin-right:4px;"></span>
+      Study Mode
+    </div>
+    <div class="topbar-stat">
+      <strong id="totalMastered">0</strong> mastered
+    </div>
+    <div class="topbar-stat">
+      <strong id="totalPct">0%</strong>
+      <div class="topbar-progress">
+        <div class="topbar-progress-fill" id="progressBar" style="width:0%"></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== FILTER BAR ===== -->
+<div class="filterbar">
+  <button class="filter-chip active" onclick="filterAll()" id="chip-all">✨ All</button>
+  <button class="filter-chip part-a active" onclick="filterPart('a')" id="chip-a">🔵 Part A · General</button>
+  <button class="filter-chip part-b active" onclick="filterPart('b')" id="chip-b">🟠 Part B · Technical</button>
+  <button class="filter-chip part-c active" onclick="filterPart('c')" id="chip-c">🟣 Part C · Domain</button>
+  <input class="filter-search" id="searchInput" placeholder="🔍 Search questions..." oninput="filterSearch()">
+</div>
+
+<!-- ===== MAIN ===== -->
+<main class="main">
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-icon">📚</span>
+      <div>
+        <div class="stat-label">Total</div>
+        <div class="stat-value" id="statTotal">0</div>
+      </div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-icon">✅</span>
+      <div>
+        <div class="stat-label">Mastered</div>
+        <div class="stat-value grn" id="statMastered">0</div>
+      </div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-icon">🔁</span>
+      <div>
+        <div class="stat-label">Studying</div>
+        <div class="stat-value amb" id="statStudying">0</div>
+      </div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-icon">🎯</span>
+      <div>
+        <div class="stat-label">Part A</div>
+        <div class="stat-value blu" id="statPartA">0</div>
+      </div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-icon">⚡</span>
+      <div>
+        <div class="stat-label">Part B</div>
+        <div class="stat-value amb" id="statPartB">0</div>
+      </div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-icon">🧩</span>
+      <div>
+        <div class="stat-label">Part C</div>
+        <div class="stat-value purp" id="statPartC">0</div>
+      </div>
+    </div>
+    <div class="stat-divider"></div>
+    <button class="byte-btn" onclick="startStudyMode()" style="margin-left:auto;padding:6px 16px;font-size:10px">🎮 Study Mode</button>
+  </div>
+
+  <!-- GRID -->
+  <div id="grid"></div>
+
+</main>
+
+<!-- ===== STUDY MODE ===== -->
+<div class="study-mode" id="studyMode">
+  <div class="study-topbar">
+    <button class="study-back" onclick="exitStudyMode()">← Back to Grid</button>
+    <div class="study-progress-text" id="studyProgress">1 / 125</div>
+    <span class="topbar-badge" style="margin:0">🎮 Study Mode</span>
+  </div>
+  <div class="study-body" id="studyBody">
+    <div class="study-card" id="studyCard">
+      <div class="study-card-tag a" id="studyTag">Part A</div>
+      <div class="study-card-question" id="studyQuestion">Loading...</div>
+      <div class="study-card-answer" id="studyAnswer">Loading...</div>
+      <div class="study-actions">
+        <button class="study-btn red" onclick="studyMark('struggle')">😰 Struggle</button>
+        <button class="study-btn amb" onclick="studyMark('review')">🔄 Review Later</button>
+        <button class="study-btn grn" onclick="studyMark('mastered')">✅ Mastered</button>
+        <button class="study-btn outline" onclick="studyNext()">Skip →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+const questions = [
+  // PART A: General & High-Level (Q1-Q50)
+  { id:'Q1', part:'a', section:'Project Overview', 
+    q:'What is Vernacular Bridge?',
+    a:'A bilingual AI-powered academic bridging platform that transforms Tamil-medium understanding into confident academic English performance for first-generation college students. It\'s not translation — it\'s a <strong>cognitive bridge</strong> combining concept explanation, exam preparation, and writing coaching, powered by Google Gemini.' },
+  { id:'Q2', part:'a', section:'Project Overview',
+    q:'Who are the target users?',
+    a:'First-generation college students in Tamil Nadu. <strong>45% of undergraduates</strong> in Indian government universities come from Tamil-medium schools. Higher education operates entirely in English — the resulting language-knowledge gap leads to academic failure attributable to language barriers, not intellectual incapacity.' },
+  { id:'Q3', part:'a', section:'Project Overview',
+    q:'What are the key features?',
+    a:'Six core features: (1) <strong>Bilingual Concept Explainer</strong> — Tamil + English explanations with MCQs, (2) <strong>Question Decoder</strong> — identifies question types, provides answer templates, (3) <strong>Writing Coach</strong> — structured feedback with scoring, (4) <strong>Navigator</strong> — bilingual explanation of entitlements/processes, (5) <strong>Unified Orchestration</strong> — parallel /full-flow endpoint, (6) <strong>Data Retrieval</strong> — search over 7 schemes + 3 processes.' },
+  { id:'Q4', part:'a', section:'Project Overview',
+    q:'What is the current project state?',
+    a:'Hackathon MVP with working backend (FastAPI, 8 endpoints) and frontend (Next.js 16, 3 pages). <strong>124 automated tests</strong> across 15 categories with 97% pass rate. 4 skipped tests require live Gemini API key. Includes an Operations Center dashboard for project tracking.' },
+  { id:'Q5', part:'a', section:'Project Overview',
+    q:'What problem does this solve that ChatGPT doesn\'t?',
+    a:'Generic LLMs give free-form, inconsistent output. Vernacular Bridge enforces: (1) strict bilingual structured JSON, (2) controlled textbook Tamil + academic English with <strong>≥60% Tamil Unicode ratio</strong>, (3) question-type-specific answer templates, (4) fact-lock and keyword-lock safety guards, (5) prompt injection protection. Purpose-built for exam prep, not conversation.' },
+  // Tech Stack & Decisions
+  { id:'Q6', part:'a', section:'Tech Stack & Decisions',
+    q:'Why FastAPI over Django or Flask?',
+    a:'<strong>Native async support</strong> for parallel LLM calls, automatic OpenAPI docs, Pydantic v2 built-in, higher throughput for I/O-bound workloads. Django\'s synchronous model would require ASGI + async wrappers. FastAPI\'s async-first architecture is essential since endpoints make multiple concurrent Gemini API calls.' },
+  { id:'Q7', part:'a', section:'Tech Stack & Decisions',
+    q:'Why Google Gemini over OpenAI GPT?',
+    a:'Gemini 2.5 Flash offers <strong>strong multilingual capabilities</strong> with generous free tier for hackathon MVP. The SDK provides clean async support. Gemini handles Tamil script well and supports structured JSON output. Dual-model strategy (Flash for speed, Pro for quality) optimizes cost without sacrificing capability.' },
+  { id:'Q8', part:'a', section:'Tech Stack & Decisions',
+    q:'Why Next.js 16 over plain React or Vite?',
+    a:'Next.js provides <strong>App Router</strong> for clean routing, built-in API proxy rewrites (frontend proxies to localhost:8000 via next.config.ts), TypeScript-first development, and SSR for future SEO. Component architecture with Tailwind enables rapid UI development.' },
+  { id:'Q9', part:'a', section:'Tech Stack & Decisions',
+    q:'Why Pydantic v2 on the backend?',
+    a:'Provides: (1) <code>@model_validator(mode=\'before\')</code> for LLM output normalization before field validation, (2) type coercion handling LLM inconsistencies, (3) field-level custom validators for Tamil ratio and MCQ quality, (4) JSON Schema generation for API docs. Used extensively in OutputSchema to coerce, fix, and validate LLM responses.' },
+  { id:'Q10', part:'a', section:'Tech Stack & Decisions',
+    q:'Why Zustand over Redux or React Context?',
+    a:'We use a <strong>hybrid approach</strong>: Zustand for Command Center store (complex state with actions, better TypeScript inference, works outside React components) and React Context for learning flow (simpler, fewer transitions). Redux would be overkill. Zustand has zero boilerplate and integrates with the operations dashboard.' },
+  { id:'Q11', part:'a', section:'Tech Stack & Decisions',
+    q:'Why not use LangChain for LLM orchestration?',
+    a:'Three reasons: (1) <strong>Control</strong> — our safety system needs deep integration with LLM call lifecycle, LangChain obscures raw API calls, (2) <strong>Complexity</strong> — 50+ transitive dependencies for features we don\'t use (memory, agents, tools), (3) <strong>Debugging</strong> — when output is inconsistent, we need to see exactly what was sent and received. Our pattern is simpler: prompt → call → parse → validate.' },
+  { id:'Q12', part:'a', section:'Tech Stack & Decisions',
+    q:'Why Tailwind CSS over component libraries?',
+    a:'Maximum design flexibility without fighting pre-built components. For bilingual educational platform with <strong>Tamil typography requirements</strong>, we need fine-grained control over typography, spacing, and layout. Utility-first keeps CSS bundle small. Built custom components (ConceptCard, MCQSection, InteractiveText) matching our design language.' },
+  { id:'Q13', part:'a', section:'Tech Stack & Decisions',
+    q:'Why in-memory caching (cachetools) over Redis?',
+    a:'For hackathon MVP, <strong>simpler to deploy</strong> with zero infrastructure dependencies. TTLCache stores learn responses keyed by query hash with configurable TTL (default 600s). Cache interface in <code>core/cache.py</code> is abstracted to make Redis swap trivial for production.' },
+  { id:'Q14', part:'a', section:'Tech Stack & Decisions',
+    q:'Why the layered architecture (api/ → services/ → core/ → models/)?',
+    a:'<strong>Separation of concerns</strong>: api/ (thin controllers, HTTP only), services/ (business logic, orchestration), core/ (infrastructure — LLM, cache, rate limiting, safety), models/ (Pydantic schemas). Changing LLM provider only touches <code>core/llm_client.py</code>. Adding new endpoint only needs new file in api/. Validators are reusable across all endpoints.' },
+  { id:'Q15', part:'a', section:'Tech Stack & Decisions',
+    q:'Why Zod on the frontend alongside Pydantic?',
+    a:'<strong>Type safety across the stack</strong>. Pydantic validates backend API responses; Zod provides runtime validation on frontend consuming those responses. Shared schema contracts documented in docs/contracts.md. Catches data shape mismatches at both boundaries, preventing silent failures from unexpected LLM output.' },
+  // Architecture Decisions
+  { id:'Q16', part:'a', section:'Architecture Decisions',
+    q:'Walk through the full request lifecycle for /learn.',
+    a:'(1) Student sends POST /learn via frontend, (2) api/learn.py validates against QueryRequest Pydantic model, (3) services/learn_service.py orchestrates: preprocess via concept_resolver.py, (4) prompt_builder.py constructs LLM prompt with language control, (5) core/llm_client.py calls Gemini with circuit breaker, (6) parsers/json_extractor.py extracts JSON from LLM text, (7) OutputSchema normalizes and validates (Tamil ratio, MCQ quality, generic phrase blocking), (8) validators/ run final checks, (9) Response returned.' },
+  { id:'Q17', part:'a', section:'Architecture Decisions',
+    q:'How does parallel orchestration in /full-flow work?',
+    a:'Receives FullFlowRequest → spawns <strong>three concurrent asyncio tasks</strong>: learn_service.process(), coach_service.process(), navigator_service.process(). Each makes independent LLM calls. <code>asyncio.gather(return_exceptions=True)</code> waits for all — failures in one don\'t block others. Results wrapped in FullFlowResponse. Achieves ~3x speedup over sequential processing.' },
+  { id:'Q18', part:'a', section:'Architecture Decisions',
+    q:'How does the circuit breaker pattern work?',
+    a:'3-state machine in core/llm_client.py: <strong>CLOSED</strong> (normal, requests pass) → <strong>OPEN</strong> (after 3 consecutive failures, all requests fail fast) → <strong>HALF_OPEN</strong> (after 60s cooldown, one test request allowed; success → CLOSED, failure → OPEN). Prevents cascade failures from Gemini quota exhaustion. /health endpoint exposes current state.' },
+  { id:'Q19', part:'a', section:'Architecture Decisions',
+    q:'Why in-memory cache instead of database-backed caching?',
+    a:'cachetools.TTLCache with configurable max size (100) and TTL (600s). Eliminates database setup while providing meaningful deduplication for repeated concept queries. Cache key is SHA-256 hash of normalized query + endpoint. /health reports cache hit/miss. Abstracted in core/cache.py for Redis swap.' },
+  { id:'Q20', part:'a', section:'Architecture Decisions',
+    q:'How is configuration managed across environments?',
+    a:'Centralized in <code>core/config.py</code> using pydantic-settings with Settings class loading from .env. Key: GOOGLE_API_KEY, PRIMARY_MODEL (gemini-2.5-flash), SECONDARY_MODEL (gemini-2.5-pro), RATE_LIMIT_RPM (20), CACHE_TTL (600), CB_THRESHOLD (3), ALLOWED_ORIGINS. Defaults for local dev. .env.example documents all.' },
+  // Feature Deep-Dives
+  { id:'Q21', part:'a', section:'Feature Deep-Dives',
+    q:'How does the Bilingual Concept Explainer work end-to-end?',
+    a:'Student submits concept query → concept resolver normalizes (Tamil/Tanglish/English) → prompt builder constructs structured prompt with language instructions, cultural context, output format → Gemini generates: tamil_simple (≥60% Tamil), english_academic (precise English), steps (2-7 items), question_decoder (type + template), mcqs (up to 5). OutputSchema validates all before returning.' },
+  { id:'Q22', part:'a', section:'Feature Deep-Dives',
+    q:'How does the Writing Coach evaluate answers?',
+    a:'Student submits POST /coach with CoachRequest (question + student_answer) → coach service sends both to Gemini with structured prompt → returns: scoring (0-10), strengths, weaknesses, missing points, improvement suggestions, improved_answer. CoachResponse validated by coach_validator.py: score normalization, markdown stripping, length control.' },
+  { id:'Q23', part:'a', section:'Feature Deep-Dives',
+    q:'How does the Navigator explain government entitlements?',
+    a:'Query matched against data/entitlements.json (7 schemes) and data/processes.json (3 processes). Matched items sent to Gemini for bilingual explanation. <strong>Fact-lock</strong> verifies no new numbers/URLs invented. <strong>Keyword-lock</strong> ensures core semantic meaning preserved across translation.' },
+  { id:'Q24', part:'a', section:'Feature Deep-Dives',
+    q:'How does the unified /full-flow endpoint work?',
+    a:'Accepts FullFlowRequest (query + optional student_answer + optional navigator category) → spawns 3 parallel asyncio tasks: Learn (bilingual + MCQs), Coach (evaluate draft), Navigator (explain processes). <code>asyncio.gather(return_exceptions=True)</code> — individual failures don\'t block others. Results assembled into FullFlowResponse with independent validation.' },
+  { id:'Q25', part:'a', section:'Feature Deep-Dives',
+    q:'How does MCQ generation work and what quality controls exist?',
+    a:'Part of /learn response. Prompt instructs Gemini: understanding checks, misconception traps, application scenarios. <strong>Quality controls</strong>: (1) reject Yes/No, (2) reject duplicates, (3) enforce exactly 4 unique options, (4) verify correct_answer matches an option (auto-fix if not), (5) normalize answer aliases, (6) block generic phrases like "identify the concept".' },
+  // Safety & Quality
+  { id:'Q26', part:'a', section:'Safety & Quality System',
+    q:'What is the Fact-Lock and how does it prevent hallucination?',
+    a:'<code>core/safety_guard.py</code> extracts all numbers and URLs from input, verifies each appears in output. If LLM invents a new number (fabricated deadline "March 15, 2025") or URL not in source data, fact-lock flags it. Critical for Navigator — hallucinated government scheme details could mislead students about scholarship eligibility.' },
+  { id:'Q27', part:'a', section:'Safety & Quality System',
+    q:'What is the Keyword-Lock?',
+    a:'Ensures <strong>core semantic keywords</strong> from input are preserved in translated output. Extracts key phrases (scheme names, eligibility criteria, deadline terms) and verifies they appear (or have proper Tamil equivalents) in both Tamil and English explanations. Prevents LLM from simplifying critical information during translation.' },
+  { id:'Q28', part:'a', section:'Safety & Quality System',
+    q:'How does the Tamil Ratio Validation work?',
+    a:'<code>calculate_tamil_ratio()</code> counts Tamil Unicode characters (U+0B80-U+0BFF) vs total non-whitespace characters. Threshold: <strong>≥60%</strong>. If tamil_simple has less than 60% Tamil, response is flagged but not rejected. Confidence score adjusts proportionally. Prevents LLM from defaulting to English in Tamil explanation.' },
+  { id:'Q29', part:'a', section:'Safety & Quality System',
+    q:'What are the MCQ Quality Guards?',
+    a:'Multiple validators: (1) <strong>Trivial rejection</strong> — blocks Yes/No, single-word answers, (2) <strong>Duplicate detection</strong> — fuzzy matching on stems and options, (3) <strong>Option count</strong> — exactly 4 per question, (4) <strong>Correct answer</strong> — verifies in options, auto-fixes, (5) <strong>Generic phrase blocking</strong> — "identify the concept", "explain briefly" flagged as low-quality.' },
+  { id:'Q30', part:'a', section:'Safety & Quality System',
+    q:'How does prompt injection protection work?',
+    a:'<code>core/sanitizer.py</code> wraps user input in XML delimiters (<code><user_input></code>) to separate from system instructions. Pattern detection against common injection attempts ("ignore previous instructions", role-playing). Runs before any LLM call. Audit middleware logs all inputs with masked IPs and hashed payloads.' },
+  // Development Process
+  { id:'Q31', part:'a', section:'Development Process',
+    q:'Describe the project structure.',
+    a:'<strong>Layered architecture</strong>: api/ (6 routers) → services/ (4 service files) → core/ (8 modules: config, llm_client, cache, rate_limiter, safety_guard, sanitizer, audit, circuit_breaker) → models/ (5 Pydantic files) → validators/ → parsers/ → utils/. Plus: verification/ (adversarial), data/ (JSON datasets), tests/ (124 tests), docs/, vernacular-bridge-ui/ (Next.js).' },
+  { id:'Q32', part:'a', section:'Development Process',
+    q:'Describe the test suite.',
+    a:'<strong>124 tests across 15 categories</strong>, 97% pass rate (120 passed, 4 skipped). Categories: Coach Validator (8), Contract Validation (13), Navigator Integration (7), Data Retrieval (7), Circuit Breaker (10), Learn Cache (5), LLM Functions (2), Text Normalization (5), Steps Normalization (6), Quality Guards (13), Question Decoder (15), MCQ Normalization (12), Input Sanitization (4), Injection Detection (13), Instruction Prefix (3).' },
+  { id:'Q33', part:'a', section:'Development Process',
+    q:'What does the adversarial testing framework do?',
+    a:'<code>verification/adversarial_generator.py</code> generates attack inputs — injection attempts, hallucination triggers, edge cases. <code>scenarios.yaml</code> defines test scenarios with expected outcomes. <code>scoring.py</code> evaluates response quality. <code>verifier.py</code> runs pipeline. Ensures safety guards hold up against deliberate attacks, not just happy-path.' },
+  { id:'Q34', part:'a', section:'Development Process',
+    q:'How do you handle LLM output inconsistency in testing?',
+    a:'Tests <strong>mock LLM layer</strong> where possible using pre-defined output fixtures. Integration tests with live Gemini are marked and skipped in CI (4 Navigator tests). Contract validation tests use fixtures to test normalization pipeline deterministically. OutputSchema @model_validator tested with edge cases: missing fields, wrong types, duplicate MCQs.' },
+  { id:'Q35', part:'a', section:'Development Process',
+    q:'What documentation exists?',
+    a:'<code>VERNACULAR_BRIDGE_OVERVIEW.md</code> (app overview), <code>VERNACULAR_BRIDGE_RESUME_CONTENT.md</code> (interview prep — 125 Q&A), <code>docs/contracts.md</code> (Pydantic schemas), <code>docs/deployment.md</code> (deployment guide), <code>docs/engineering_audit.md</code> (61 findings), <code>docs/operations-center.html</code> (interactive dashboard), <code>.env.example</code> (environment variables).' },
+  // Challenges & Learnings
+  { id:'Q36', part:'a', section:'Challenges & Learnings',
+    q:'What was the biggest technical challenge?',
+    a:'<strong>Tanglish normalization</strong> — handling code-mixed Tamil-English input. Students type unpredictably: pure Tamil, pure Roman transliteration ("vanakkam"), or mixed ("naan oru student-aa irukken"). Solved as a preprocessing pipeline problem, not LLM prompt engineering. Key insight: treat it as NLP preprocessing, not prompting.' },
+  { id:'Q37', part:'a', section:'Challenges & Learnings',
+    q:'What would you do differently?',
+    a:'(1) Build safety system <strong>first</strong>, not last — fact-lock was added after seeing early hallucination issues, (2) Use Gemini JSON mode from day one instead of post-processing free text, (3) Mock LLM layer more aggressively in tests (4 skipped Navigator tests), (4) Set up Operations Center dashboard earlier for tracking.' },
+  { id:'Q38', part:'a', section:'Challenges & Learnings',
+    q:'How did you handle bilingual schema validation?',
+    a:'OutputSchema validation needed to check two languages simultaneously. @model_validator(mode=\'before\') normalizes raw LLM dict (type coercion, field mapping), then field-level validators check each language independently: Tamil ratio ≥60% for tamil_simple, min/max lengths for english_academic, MCQ quality for mcqs. Confidence score is weighted average of all signals.' },
+  { id:'Q39', part:'a', section:'Challenges & Learnings',
+    q:'What are scaling considerations?',
+    a:'For production: (1) Redis for multi-instance cache, (2) Database for student profiles + history, (3) Proper JWT authentication, (4) Gemini quota management per-student, (5) Gemini structured output mode to reduce post-processing, (6) Queue system for async /full-flow, (7) Kubernetes with health checks.' },
+  { id:'Q40', part:'a', section:'Challenges & Learnings',
+    q:'What did you learn from adversarial testing?',
+    a:'Three key failures: (1) LLMs confidently invent government scheme numbers — fact-lock is essential, not optional, (2) Translation quality degrades with English→Tamil — prompt needs explicit language-switching instructions, (3) Prompt injection via student input is real — sanitizer caught multiple attempts during testing.' },
+  // Behavioral
+  { id:'Q41', part:'a', section:'Behavioral & Leadership',
+    q:'Describe your role in this project.',
+    a:'<strong>Full-stack architect and lead developer</strong>. Designed layered architecture, implemented backend (FastAPI, LLM, safety system, 124 tests), built frontend (Next.js, TypeScript, Tailwind), created operations dashboard, wrote all documentation. Designed adversarial testing framework and bilingual schema validation system.' },
+  { id:'Q42', part:'a', section:'Behavioral & Leadership',
+    q:'How did you prioritize features?',
+    a:'<strong>MoSCoW framework</strong>: Must-have (bilingual explainer, safety system, basic frontend) → Should-have (writing coach, navigator, parallel orchestration) → Could-have (MCQ generation, question decoder, operations dashboard) → Won\'t-have (authentication, database, voice, multi-language). Safety promoted from "should" to "must" after adversarial testing revealed hallucination risks.' },
+  { id:'Q43', part:'a', section:'Behavioral & Leadership',
+    q:'How did you manage scope creep?',
+    a:'Grok philosophy defined clear phases (0-6). Stuck to Phase 1-3 for hackathon: core UI, robust AI backend, features. Operations dashboard added as "could-have" that became valuable. Resisted authentication, database, voice input despite attractiveness — didn\'t directly serve core value proposition.' },
+  { id:'Q44', part:'a', section:'Behavioral & Leadership',
+    q:'How do you ensure code quality?',
+    a:'(1) Pydantic schema validation on every API boundary, (2) 124 tests with 97% coverage, (3) Adversarial testing for safety guards, (4) Structured audit logging with masked IPs, (5) Layered architecture enforcing separation of concerns, (6) Documentation-as-code (contracts, audit), (7) Operations Center for real-time visibility.' },
+  { id:'Q45', part:'a', section:'Behavioral & Leadership',
+    q:'How would you onboard a new developer?',
+    a:'Start with VERNACULAR_BRIDGE_OVERVIEW.md → docs/contracts.md for schemas → run <code>python orchestrator.py</code> + <code>npm run dev</code> → read orchestrator.py (<100 lines) for route mounting → explore api/ → services/ → core/ flow → run test suite → open operations-center.html for dashboard. Key architectural decisions in core/ — read config.py and llm_client.py first.' },
+  // Future Vision
+  { id:'Q46', part:'a', section:'Future Vision',
+    q:'What are immediate next steps?',
+    a:'(1) Database persistence for profiles + history, (2) SM-2 spaced repetition for MCQ review, (3) JWT authentication, (4) Docker + cloud deployment, (5) Real-time government data feeds, (6) Hindi + Telugu language support using modular prompt architecture.' },
+  { id:'Q47', part:'a', section:'Future Vision',
+    q:'How would you scale to 10,000+ students?',
+    a:'(1) Redis cluster for cache, (2) PostgreSQL for analytics, (3) Celery + Redis for request queuing, (4) Multiple FastAPI instances behind load balancer, (5) Redis-backed per-student rate limiting, (6) CDN caching for static explanations, (7) Prometheus + Grafana monitoring via /health.' },
+  { id:'Q48', part:'a', section:'Future Vision',
+    q:'What technologies would you add?',
+    a:'(1) <strong>Voice input</strong> — Whisper API for Tamil voice (critical for low-literacy users), (2) <strong>RAG</strong> — retrieval-augmented generation for syllabus content, (3) <strong>SM-2</strong> — spaced repetition for MCQ review, (4) <strong>PostgreSQL</strong> — student data, (5) <strong>Redis</strong> — distributed caching, (6) <strong>WebSocket</strong> — real-time coaching, (7) <strong>Indic NLP</strong> — better Tamil processing.' },
+  { id:'Q49', part:'a', section:'Future Vision',
+    q:'What real-time features would you add?',
+    a:'(1) Live writing coach feedback as students type (WebSocket from Gemini), (2) Real-time MCQ difficulty adaptation based on performance, (3) Live collaboration — share and annotate explanations, (4) Push notifications for deadlines (exam registration, scholarships), (5) Real-time government scheme updates.' },
+  { id:'Q50', part:'a', section:'Future Vision',
+    q:'What\'s the long-term vision?',
+    a:'Vernacular Bridge becomes the <strong>academic success platform for all first-generation college students in India</strong>. Started with Tamil → expanded to Hindi, Telugu, Kannada, Bengali. Long-term: university API integration, personalized learning paths, peer community, mobile-first PWA for offline access in low-connectivity areas.' },
+
+  // PART B: Technical Drilldown (T1-T50)
+  // Architecture & System Design
+  { id:'T1', part:'b', section:'Architecture & System Design',
+    q:'Walk through the full architecture from request to response.',
+    a:'Frontend (Next.js, port 3000) → API proxy rewrite (next.config.ts) → FastAPI (8000) → Router (api/) validates via Pydantic → Service (services/) orchestrates → Core (core/) handles LLM, cache, rate limiting → Parsers (parsers/) extract JSON from LLM text → Validators check quality → Models enforce schema → Response. Each layer only depends on the layer below it.' },
+  { id:'T2', part:'b', section:'Architecture & System Design',
+    q:'How does layered architecture differ from monolithic endpoints?',
+    a:'Monolithic = single function handling validation, LLM, parsing, response. Our approach: api/learn.py (~30 lines, just route + typing), services/learn_service.py (~80 lines, orchestration), core/llm_client.py (~120 lines, Gemini + circuit breaker), parsers/json_extractor.py (~50 lines, output parsing). Benefits: testability (mock any layer), reusability, maintainability (changing Gemini only touches core/llm_client.py).' },
+  { id:'T3', part:'b', section:'Architecture & System Design',
+    q:'How does parallel orchestration work with asyncio.gather()?',
+    a:'Three independent async tasks created: <code>learn_task = asyncio.create_task(...)</code>, <code>coach_task</code>, <code>navigator_task</code>. Then <code>results = await asyncio.gather(learn_task, coach_task, navigator_task, return_exceptions=True)</code>. <code>return_exceptions=True</code> means if one fails (e.g., Gemini quota for navigator), others still complete. Each result checked: if Exception → fallback error message.' },
+  { id:'T4', part:'b', section:'Architecture & System Design',
+    q:'Describe the circuit breaker state machine.',
+    a:'<code>core/llm_client.py</code> CircuitBreaker: <strong>CLOSED</strong> (normal, requests pass) → after <code>CB_THRESHOLD=3</code> consecutive failures → <strong>OPEN</strong> (all requests fail fast, return fallback) → after <code>CB_COOLDOWN=60s</code> → <strong>HALF_OPEN</strong> (one test request allowed; success → CLOSED, failure → OPEN). Thread-safe transitions. /health exposes state + failure_count.' },
+  { id:'T5', part:'b', section:'Architecture & System Design',
+    q:'How is configuration handled across environments?',
+    a:'<code>core/config.py</code> uses pydantic-settings with Settings class reading from .env via load_dotenv(). All settings have sensible local dev defaults. Override via env vars or separate .env.staging/.env.production. Key: GOOGLE_API_KEY, PRIMARY_MODEL, SECONDARY_MODEL, RATE_LIMIT_RPM (20), CACHE_TTL (600), CB_THRESHOLD (3), ALLOWED_ORIGINS.' },
+  // LLM Integration & Prompt Engineering
+  { id:'T6', part:'b', section:'LLM Integration & Prompt Engineering',
+    q:'How does the Gemini API integration work?',
+    a:'<code>core/llm_client.py</code> uses google-genai SDK. Client initialized with GOOGLE_API_KEY. <code>generate()</code> accepts prompt string + optional model override. Includes: (1) auto model selection (Flash primary, Pro fallback), (2) circuit breaker wrapping, (3) retry with exponential backoff on transient errors, (4) timeout handling. Response text extracted — JSON parsing happens in parsers/.' },
+  { id:'T7', part:'b', section:'LLM Integration & Prompt Engineering',
+    q:'How does the prompt builder work?',
+    a:'<code>utils/prompt_builder.py</code> constructs structured prompts per endpoint. Learn prompt includes: system instructions (language control, output format), cultural context (Tamil Nadu education), concept context, output schema template. Key techniques: (1) explicit language-switching, (2) few-shot examples, (3) negative instructions ("do not invent numbers"), (4) cultural grounding ("explain to first-gen Tamil Nadu student").' },
+  { id:'T8', part:'b', section:'LLM Integration & Prompt Engineering',
+    q:'How does JSON extraction from LLM text work?',
+    a:'parsers/json_extractor.py pipeline: (1) Try json.loads() directly, (2) Search for ```json...``` blocks, (3) Find first { and last } for object extraction, (4) Regex cleanup: trailing commas, single quotes, comments, (5) Parse with json.loads(), (6) If all fails → minimal fallback dict. Six strategies because Gemini wraps JSON inconsistently.' },
+  { id:'T9', part:'b', section:'LLM Integration & Prompt Engineering',
+    q:'How does dual-model fallback work?',
+    a:'Primary: <strong>gemini-2.5-flash</strong> (fast, cost-effective, 90%+ requests). Secondary: <strong>gemini-2.5-pro</strong> (higher quality, for hard cases). Circuit breaker triggers switch: Flash hits quota 3 times consecutively → breaker opens → Pro handles subsequent requests. After 60s cooldown → test request to Flash to check recovery.' },
+  { id:'T10', part:'b', section:'LLM Integration & Prompt Engineering',
+    q:'How do you handle token limits and cost optimization?',
+    a:'(1) Cache deduplication — repeated queries hit cache, not LLM, (2) Prompt size optimization — only necessary context, not full dataset, (3) Response length control — validators enforce max lengths (tamil_simple: 800 chars, english_academic: 1200 chars), (4) Model selection — Flash for most, Pro only on fallback, (5) Rate limiting (20 req/min/IP) prevents abuse.' },
+  // Safety & Quality Guards
+  { id:'T11', part:'b', section:'Safety & Quality Guards',
+    q:'How is fact-lock implemented?',
+    a:'<code>core/safety_guard.py</code> verify_fact_lock(input, output): (1) Extract numbers via regex <code>\\d+\\.?\\d*</code>, (2) Extract URLs via <code>https?://[^\\s]+</code>, (3) Check each extracted item appears in output, (4) Return dict: passed, missing_numbers, missing_urls, new_numbers (potential hallucination). Service layer checks and can flag or reject.' },
+  { id:'T12', part:'b', section:'Safety & Quality Guards',
+    q:'How is keyword-lock verified?',
+    a:'verify_keyword_lock(input, output, language): (1) Extract key phrases via TF-IDF/keyword extraction, (2) Check each phrase (or translation equivalent) appears in output, (3) For Tamil→English: verify Tamil terms have English equivalents, (4) For English→Tamil: verify English terms have Tamil equivalents, (5) Return coverage score + missing keywords list. Critical for government scheme names and eligibility.' },
+  { id:'T13', part:'b', section:'Safety & Quality Guards',
+    q:'How is Tamil ratio calculated?',
+    a:'<code>calculate_tamil_ratio(text)</code> counts Tamil Unicode (U+0B80-U+0BFF) against total non-whitespace characters. Threshold: <strong>0.6 (60%)</strong>. Confidence adjustment: <code>tamil_confidence = min(1.0, ratio / 0.6)</code>. At 0.7 ratio → 1.0 confidence. At 0.45 → 0.75. Below threshold: flagged but not rejected (allows English terms in Tamil text).' },
+  { id:'T14', part:'b', section:'Safety & Quality Guards',
+    q:'What MCQ quality filters exist?',
+    a:'(1) <code>validate_mcq_triviality()</code> — rejects <3 distinct concept words, (2) <code>validate_mcq_duplicates()</code> — Levenshtein distance for near-duplicate detection, (3) <code>validate_mcq_options()</code> — exactly 4 with min character count, (4) OutputSchema: validate_correct_answer_in_options() verifies match, normalizes aliases (A→option_1). normalize_raw_llm_output() deduplicates and fixes option count.' },
+  { id:'T15', part:'b', section:'Safety & Quality Guards',
+    q:'What generic phrases are blocked and why?',
+    a:'Blocklist in OutputSchema normalize_raw_llm_output(): "identify the concept", "explain briefly", "discuss the topic", "this is about", "in simple terms", "let me explain". These indicate template responses, not substantive content. When detected, field flagged for regeneration or fallback. Quality guard specifically tuned for educational content — generic explanations don\'t help exam prep.' },
+  // Backend Engineering
+  { id:'T16', part:'b', section:'Backend Engineering',
+    q:'How are FastAPI routes structured?',
+    a:'Each api/ file defines <code>router = APIRouter()</code>. Example api/learn.py: <code>@router.post("/learn")</code> + <code>@router.post("/generate")</code> (legacy alias). Routes are thin: validate via Pydantic → call service → return typed response. Orchestrator.py (<100 lines) mounts all routers via app.include_router(). CORS from settings. /health mounted directly.' },
+  { id:'T17', part:'b', section:'Backend Engineering',
+    q:'How does @model_validator(mode=\'before\') work in OutputSchema?',
+    a:'Receives raw LLM dictionary before field validation. Performs: (1) type coercion (string→list for steps, dict→list for mcqs), (2) quality guards (blocks generic phrases), (3) normalize question_decoder (map types to structures), (4) clean MCQs (deduplicate options, fix correct_answer, enforce 4-option count), (5) strip markdown from all text fields. Field validators then run on clean data.' },
+  { id:'T18', part:'b', section:'Backend Engineering',
+    q:'How does TTL caching work?',
+    a:'core/cache.py wraps cachetools.TTLCache: (1) <code>get_or_compute(key, compute_fn, ttl)</code> — returns cached or computes + caches, (2) LRU eviction at max_size (100), (3) TTL-based expiry (600s default), (4) SHA-256 hash of normalized query + endpoint as key, (5) Thread-safe via threading.Lock. /health reports cache_size and hit/miss stats.' },
+  { id:'T19', part:'b', section:'Backend Engineering',
+    q:'How does per-IP rate limiting work?',
+    a:'core/rate_limiter.py sliding window: (1) Tracks request timestamps per IP in dict, (2) Slides window of RATE_LIMIT_RPM seconds (default 60), (3) Counts requests within window, (4) Returns 429 with Retry-After header when exceeded, (5) Auto-cleans stale entries. Applied as FastAPI middleware. /health doesn\'t count toward limits.' },
+  { id:'T20', part:'b', section:'Backend Engineering',
+    q:'How does audit logging work?',
+    a:'core/audit.py AuditMiddleware: (1) Logs method, path, status, response time, (2) Masks IPs (last octet → ***) for privacy, (3) Hashes request payloads (SHA-256) for correlation without storing sensitive data, (4) Structured JSON for machine-parseable output, (5) Excludes health checks and static files.' },
+  // Data Modeling
+  { id:'T21', part:'b', section:'Data Modeling & Schemas',
+    q:'Walk through the OutputSchema normalization pipeline.',
+    a:'Raw LLM dict → @model_validator(mode=\'before\') receives data: (1) Ensure tamil_simple is string, (2) Ensure english_academic is string, (3) Ensure steps is list (handle string→split), (4) Run normalize_question_decoder(), (5) Run normalize_mcqs() — deduplicate, fix options, validate answer, (6) Run block_generic_phrases() → Clean data → Field validators run min/max lengths, Tamil ratio, MCQ count.' },
+  { id:'T22', part:'b', section:'Data Modeling & Schemas',
+    q:'Describe CoachRequest/CoachResponse models.',
+    a:'CoachRequest: question (the exam question), student_answer (draft), language_config. CoachResponse: score (0-10), strengths, weaknesses, missing_points, improvement_suggestions, improved_answer (complete rewrite). coach_validator.py normalizes scores, strips markdown, controls length.' },
+  { id:'T23', part:'b', section:'Data Modeling & Schemas',
+    q:'Describe NavigatorExplainRequest/Response.',
+    a:'NavigatorExplainRequest: query, category (entitlements|processes), language_config. NavigatorExplainResponse: item_name, tamil_explanation, english_explanation, key_points, relevant_links (must pass fact-lock — no invented URLs). Response undergoes both fact-lock and keyword-lock verification.' },
+  { id:'T24', part:'b', section:'Data Modeling & Schemas',
+    q:'Describe FullFlowResponse wrapper.',
+    a:'Wraps three sub-responses: learn (Optional OutputSchema — null if fails), coach (Optional CoachResponse — null if no answer provided), navigator (Optional NavigatorExplainResponse — null if fails). Plus metadata: processing_time_ms, models_used, cache_hit. Partial failures degrade gracefully — still get learn response even if coach fails.' },
+  { id:'T25', part:'b', section:'Data Modeling & Schemas',
+    q:'How does JSON extraction handle malformed LLM output?',
+    a:'parsers/json_extractor.py: (1) Try json.loads() directly, (2) Regex for ```json...``` blocks, (3) Find first { and last }, (4) Remove trailing commas, single-quote wrapping, // comments, (5) null→None conversion, (6) If all fails: return valid schema with error indication. Six strategies for Gemini\'s inconsistent JSON wrapping.' },
+  // Frontend
+  { id:'T26', part:'b', section:'Frontend Engineering',
+    q:'How is the Next.js App Router structured?',
+    a:'src/app/: page.tsx (main learning dashboard — input, bilingual output, MCQs, coach), dashboard/page.tsx (analytics), command-center/page.tsx (operations). layout.tsx wraps with providers. globals.css has Tailwind + custom CSS. API calls proxied via next.config.ts rewrites: /api/:path* → localhost:8000/:path*.' },
+  { id:'T27', part:'b', section:'Frontend Engineering',
+    q:'How does InteractiveText hover isolation work?',
+    a:'Uses React state (hoveredIndex) instead of CSS-only hover. Each word wrapped in span with onMouseEnter/onMouseLeave. hoveredIndex tracks which word (by index) is hovered. hoverTimeoutRef adds 100ms delay before hiding tooltip to prevent flicker. Tooltip visibility: isHovered = hoveredIndex === index. Prevents cascading hover bug from CSS group-hover.' },
+  { id:'T28', part:'b', section:'Frontend Engineering',
+    q:'How does the Zustand store work for command center?',
+    a:'Store defines: activePanel (learning|coaching|navigator), queryHistory (QueryEntry[]), selectedQuery (string|null), actions: setActivePanel, addToHistory, selectQuery. Better TypeScript inference than Context, works outside React components (useful for operations dashboard), no Provider wrapper needed. Persists to localStorage.' },
+  { id:'T29', part:'b', section:'Frontend Engineering',
+    q:'How does React Context work for learning state?',
+    a:'LearningContext provides: currentQuery, currentResponse (OutputSchema|null), coachResponse (CoachResponse|null), navigatorResponse, isLoading, error, plus actions. Simpler than Zustand for this use case — learning flow has fewer state transitions, benefits from React\'s built-in re-render optimization.' },
+  { id:'T30', part:'b', section:'Frontend Engineering',
+    q:'How does the API proxy rewrite work?',
+    a:'next.config.ts rewrites(): source /api/:path* → destination localhost:8000/:path*. Frontend calls /api/learn → Next.js proxies to localhost:8000/learn. Benefits: (1) No CORS in dev, (2) Same-origin in production, (3) API client uses relative URLs working in both dev and prod.' },
+  // Testing
+  { id:'T31', part:'b', section:'Testing',
+    q:'What\'s the overall test strategy?',
+    a:'Three tiers: (1) <strong>Unit tests</strong> — functions in isolation (validators, parsers, cache, circuit breaker), mocked LLM, (2) <strong>Integration tests</strong> — service layer with mocked LLM (fixture data), (3) <strong>E2E tests</strong> — full lifecycle with live Gemini (Navigator tests, skipped in CI). Distribution: 70% unit, 25% integration, 5% e2e.' },
+  { id:'T32', part:'b', section:'Testing',
+    q:'How do you mock LLM responses in tests?',
+    a:'core/llm_client.py generate() mocked via unittest.mock.patch or pytest-mock. Test fixtures provide pre-defined output dicts for deterministic normalization pipeline testing without live Gemini. Example: test_contracts.py has fixture dicts for valid, malformed, and edge-case outputs.' },
+  { id:'T33', part:'b', section:'Testing',
+    q:'What do the 15 test categories cover?',
+    a:'Coach Validator (8), Contract Validation (13), Navigator Integration (7), Data Retrieval (7), Circuit Breaker (10), Learn Cache (5), LLM Functions (2), Text Normalization (5), Steps Normalization (6), Quality Guards (13), Question Decoder (15), MCQ Normalization (12), Input Sanitization (4), Injection Detection (13), Instruction Prefix (3).' },
+  { id:'T34', part:'b', section:'Testing',
+    q:'How does adversarial testing work?',
+    a:'adversarial_generator.py generates: (1) prompt injection attempts, (2) hallucination triggers (non-existent schemes), (3) edge cases (empty, extremely long, Unicode), (4) language mixing attacks. scenarios.yaml defines test scenarios with expected outcomes. scoring.py evaluates (did safety guard catch it?). run_verification.py orchestrates.' },
+  { id:'T35', part:'b', section:'Testing',
+    q:'How are the 4 skipped Navigator tests handled?',
+    a:'Marked with <code>@pytest.mark.skipif(not os.getenv("GOOGLE_API_KEY"), reason="Requires live Gemini API")</code>. Skipped in CI to avoid API costs and flakiness. Locally with <code>GOOGLE_API_KEY=xxx python -m pytest tests/test_navigator_explain.py -v</code>. Other 120 tests run without external deps.' },
+  // DevOps
+  { id:'T36', part:'b', section:'DevOps & Deployment',
+    q:'How is Docker configured?',
+    a:'<strong>Dockerfile</strong>: Python 3.12 base, install system deps, copy requirements.txt + pip install, copy application code, expose 8000, CMD: uvicorn orchestrator:app --host 0.0.0.0 --port 8000. <strong>Procfile</strong> for Heroku-style: web: uvicorn orchestrator:app --host $HOST --port $PORT. Env vars via Docker -e or .env mount.' },
+  { id:'T37', part:'b', section:'DevOps & Deployment',
+    q:'How does the health endpoint work?',
+    a:'GET /health returns: status "ok", version "1.0.0", cache_size, circuit_breaker {state, failure_count}, data {entitlements {count, loaded}, processes {count, loaded}}, config {primary_model, secondary_model, rate_limit_rpm}. Provides production monitoring without external tools.' },
+  { id:'T38', part:'b', section:'DevOps & Deployment',
+    q:'How are environment variables managed?',
+    a:'.env.example documents all with comments. .env (gitignored) has actual values. core/config.py uses pydantic-settings with Settings(env_file=".env"). Docker uses -e flags or --env-file. Production: cloud provider secret management. ALLOWED_ORIGINS critical for CORS — must match deployed frontend domain.' },
+  { id:'T39', part:'b', section:'DevOps & Deployment',
+    q:'How is CORS configured?',
+    a:'CORSMiddleware with: allow_origins=settings.ALLOWED_ORIGINS (default: localhost:3000, localhost:7860), allow_credentials=True, allow_methods=["*"], allow_headers=["*"]. For production: update ALLOWED_ORIGINS with deployed frontend URL. Next.js rewrites handle proxy in dev.' },
+  { id:'T40', part:'b', section:'DevOps & Deployment',
+    q:'How would you deploy to production?',
+    a:'(1) docker build, (2) Push to container registry, (3) Deploy to Cloud Run/GKE/ECS, (4) Update ALLOWED_ORIGINS, (5) Frontend on Vercel/Netlify, (6) Update next.config.ts rewrites, (7) Prometheus scraping /health, (8) SSL/TLS at load balancer.' },
+  // Problem Solving
+  { id:'T41', part:'b', section:'Problem Solving',
+    q:'What was the hardest technical challenge?',
+    a:'<strong>Tanglish normalization</strong>. Students type "naan photosynthesis-a purinjukkiren" — mix of Tamil words, English words, Tamil-inflected English. Concept resolver uses multi-step pipeline: (1) detect script mix, (2) tokenize by script boundaries, (3) normalize Roman transliterations, (4) extract core concept (removing Tamil particles), (5) route to LLM. Key insight: NLP preprocessing, not prompting.' },
+  { id:'T42', part:'b', section:'Problem Solving',
+    q:'Why not use LangChain?',
+    a:'(1) <strong>Control</strong> — safety system needs deep LLM integration; LangChain obscures API calls, (2) <strong>Complexity</strong> — 50+ transitive deps for features unused (memory, agents, tools), (3) <strong>Debugging</strong> — when LLM output is inconsistent, we need to see raw requests/responses. Our pattern is simpler and more transparent.' },
+  { id:'T43', part:'b', section:'Problem Solving',
+    q:'How did you handle LLM hallucination?',
+    a:'Multi-layered: (1) Prompt-level negative instructions, (2) Fact-lock — runtime verification of numbers/URLs, (3) Keyword-lock — semantic preservation, (4) Tamil ratio — prevents English defaulting, (5) Generic phrase blocking — catches template responses, (6) Circuit breaker — fails fast when unreliable, (7) Structured output — Pydantic forces predictable format. Reduced inconsistencies by 90%+.' },
+  { id:'T44', part:'b', section:'Problem Solving',
+    q:'What did adversarial testing teach?',
+    a:'(1) LLMs confidently invent plausible numbers — fact-lock essential, (2) Prompt injection works even in educational apps, (3) JSON extraction needed 6 strategies for Gemini inconsistency, (4) Edge cases matter — empty, Unicode, extremely long, (5) Safety system needs graceful fallback, not errors.' },
+  { id:'T45', part:'b', section:'Problem Solving',
+    q:'Why FastAPI over Django?',
+    a:'(1) <strong>Async-first</strong> — /full-flow runs 3 concurrent LLM calls with asyncio.gather(), (2) <strong>Pydantic natively</strong> — DRF uses own serializers, (3) <strong>Performance</strong> — 3-5x faster for I/O-bound workloads (our endpoints are pure I/O), (4) <strong>Auto-docs</strong> — OpenAPI from Pydantic models, (5) <strong>Lightweight</strong> — pure API, no ORM, no admin, no templates.' },
+  // Code Patterns
+  { id:'T46', part:'b', section:'Code Patterns & Practices',
+    q:'How does @model_validator solve the LLM output problem?',
+    a:'LLMs return inconsistent dicts — strings where lists expected, missing fields, extra fields, wrong enums. @model_validator(mode=\'before\') normalizes before field validation: steps as string → split to list, mcqs as single dict → wrap in list, correct_answer as "A" → map to option text, generic phrases blocked, MCQ options deduplicated. Field validators run on clean data.' },
+  { id:'T47', part:'b', section:'Code Patterns & Practices',
+    q:'How does the service layer abstraction work?',
+    a:'Each service (learn, coach, navigator) is a module with process() async function. Responsibilities: (1) Call LLM via core/llm_client.py, (2) Run prompt builder, (3) Call parser, (4) Run validators, (5) Handle errors and fallbacks. Services injected with dependencies — no global state. Easy to test (mock service function) and add new services (new file in services/).' },
+  { id:'T48', part:'b', section:'Code Patterns & Practices',
+    q:'How is the concept resolver pipeline implemented?',
+    a:'utils/concept_resolver.py pipeline: normalize_input() → detect_script_mix() → extract_concept() → resolve(). Each step is pure function. Handles: Unicode normalization (NFC), Tamil script detection (Unicode range), Roman transliteration mapping, grammar particle removal, core concept extraction. Pipeline architecture makes each step independently testable.' },
+  { id:'T49', part:'b', section:'Code Patterns & Practices',
+    q:'How is error handling structured across the stack?',
+    a:'(1) API layer — FastAPI exception handlers catch validation errors (422), structured error responses, (2) Service layer — try/except LLMError and ValidationError, return fallbacks, (3) Core layer — circuit breaker catches consecutive failures, (4) Frontend — API client handles HTTP errors via React state, (5) Audit — all errors logged via middleware with structured JSON.' },
+  { id:'T50', part:'b', section:'Code Patterns & Practices',
+    q:'How does cache key generation work?',
+    a:'core/cache.py: (1) Normalize query (lowercase, strip), (2) Include endpoint name, (3) Include language config, (4) Compute SHA-256 hash. Ensures: "Photosynthesis" and "photosynthesis" hit same cache, different endpoints don\'t collide, different language configs get separate entries, keys are fixed-length and dict-safe.' },
+  // Quick-Fire
+  { id:'QF1', part:'b', section:'Quick-Fire',
+    q:'How many API endpoints?', a:'8: /learn, /generate (alias), /coach, /navigator/explain, /full-flow, /entitlements, /processes, /health.' },
+  { id:'QF2', part:'b', section:'Quick-Fire',
+    q:'How many tests?', a:'124 tests across 15 categories, 97% pass rate (120 passed, 4 skipped — live Gemini integration).' },
+  { id:'QF3', part:'b', section:'Quick-Fire',
+    q:'What\'s the rate limit?', a:'20 requests per minute per IP, sliding window.' },
+  { id:'QF4', part:'b', section:'Quick-Fire',
+    q:'What\'s the cache TTL?', a:'600 seconds (10 minutes), max 100 entries.' },
+  { id:'QF5', part:'b', section:'Quick-Fire',
+    q:'What circuit breaker threshold?', a:'3 consecutive failures → OPEN state, 60 seconds cooldown → HALF_OPEN.' },
+  { id:'QF6', part:'b', section:'Quick-Fire',
+    q:'What\'s the Tamil ratio threshold?', a:'60% (0.6) — Tamil Unicode must be ≥60% of characters in tamil_simple.' },
+  { id:'QF7', part:'b', section:'Quick-Fire',
+    q:'What\'s the tech stack in one line?', a:'Python/FastAPI + Google Gemini + Next.js 16/TypeScript + Pydantic v2 + Tailwind CSS.' },
+  { id:'QF8', part:'b', section:'Quick-Fire',
+    q:'How many frontend pages?', a:'3: Main learning dashboard (/), Analytics dashboard (/dashboard), Command center (/command-center).' },
+  { id:'QF9', part:'b', section:'Quick-Fire',
+    q:'How many data entries?', a:'7 government entitlement schemes + 3 university processes = 10 dataset entries.' },
+  { id:'QF10', part:'b', section:'Quick-Fire',
+    q:'What\'s the max MCQ count?', a:'5 questions per concept, each with exactly 4 unique options.' },
+
+  // PART C: Functional / Domain (F1-F25)
+  { id:'F1', part:'c', section:'Student Onboarding & Input',
+    q:'Describe the complete student journey.',
+    a:'(1) Opens localhost:3000 → dashboard with input panel, (2) Types concept query (e.g., "Photosynthesis"), (3) Submits → frontend sends POST /api/learn, (4) Backend normalizes input (Tanglish handling), (5) Gemini generates bilingual explanation + MCQs, (6) Response validated (Tamil ratio, MCQ quality, fact-lock), (7) Frontend renders: Tamil card, English card, Steps list, MCQ section, Question decoder, (8) Student hovers for term explanations, (9) Student clicks MCQ options to test, (10) Switches to Coach tab for writing practice.' },
+  { id:'F2', part:'c', section:'Student Onboarding & Input',
+    q:'How does the system handle Tamil script input?',
+    a:'Concept resolver detects Tamil Unicode (U+0B80-U+0BFF) and processes directly. Tamil input normalized (NFC form), grammar particles identified and preserved/stripped based on context. Resolved concept passed to prompt builder with explicit language instructions. LLM instructed to generate both Tamil and English explanations regardless of input language.' },
+  { id:'F3', part:'c', section:'Student Onboarding & Input',
+    q:'How does it handle Tanglish input?',
+    a:'Script-mix detection identifies boundaries between Tamil and Roman. "naan photosynthesis-a purinjukkiren" → tokens: ["naan", "photosynthesis-a", "purinjukkiren"]. Tamil tokens mapped to standard form, core English concept extracted ("photosynthesis"), grammar particles stripped. Resolved: "photosynthesis" with context that student wants Tamil explanation.' },
+  { id:'F4', part:'c', section:'Student Onboarding & Input',
+    q:'How does it handle English-only input?',
+    a:'English goes through concept resolver with minimal transformation (lowercase, whitespace). Prompt builder adds: "Generate tamil_simple in Tamil and english_academic in English." LLM generates Tamil from English concepts. Tamil ratio validator ensures ≥60% Tamil — catches when LLM defaults to English.' },
+  // Concept Explainer
+  { id:'F5', part:'c', section:'Concept Explainer Flow',
+    q:'What happens when a student asks about "Photosynthesis"?',
+    a:'(1) Input normalized to "photosynthesis", (2) Prompt: explain in Tamil (simple, culturally situated) + English (academic, step-by-step), (3) Generate 2-7 steps, (4) Question decoder (identify as "explain", provide template), (5) Up to 5 MCQs, (6) Gemini returns JSON, (7) OutputSchema normalizes (Tamil ratio, MCQ quality), (8) Validators run fact-lock, keyword-lock, alignment, (9) Response with all fields. Expected: Tamil with relevant examples, English for academic writing.' },
+  { id:'F6', part:'c', section:'Concept Explainer Flow',
+    q:'How is Tamil ratio enforced?',
+    a:'After Gemini generates tamil_simple, calculate_tamil_ratio() counts Unicode. If ratio < 0.6, confidence reduced: confidence = min(1.0, ratio / 0.6). Response still returned with lower confidence. Frontend can display warning. Prompt instructions + ratio validation keep Tamil >80% in practice.' },
+  { id:'F7', part:'c', section:'Concept Explainer Flow',
+    q:'How is MCQ quality ensured?',
+    a:'Prompt instructs: understanding checks (basic recall), misconception traps (common wrong answers), application-based (real scenarios). Quality guards: (1) Reject Yes/No, (2) Remove duplicates (fuzzy matching), (3) Ensure exactly 4 options, (4) Verify correct_answer matches option, (5) Block generic phrases. If <3 quality MCQs survive, confidence_score reduced proportionally.' },
+  { id:'F8', part:'c', section:'Concept Explainer Flow',
+    q:'How does the question decoder work?',
+    a:'Embedded in /learn response. Gemini identifies question type (define, explain, compare, analyze, diagram, short_note) and provides: expected_structure (answer organization — intro, body, conclusion for "explain"), answer_template (specific sections), question_type (classified type). Helps students structure exam answers per academic expectations.' },
+  // Writing Coach
+  { id:'F9', part:'c', section:'Writing Coach Flow',
+    q:'How does a student submit a draft for coaching?',
+    a:'Navigates to Coach tab, types/pastes draft, submits POST /api/coach with CoachRequest(question="...", student_answer="..."). Coach service sends both to Gemini with prompt for structured evaluation: scoring (0-10), strengths, weaknesses, missing points, suggestions, improved answer. Response validated by coach_validator.py.' },
+  { id:'F10', part:'c', section:'Writing Coach Flow',
+    q:'What does the scoring rubric look like?',
+    a:'0-10: 0-2 (significant gaps, missing core concepts), 3-4 (partial understanding), 5-6 (adequate, needs improvement), 7-8 (good, minor improvements), 9-10 (excellent, exam-ready). coach_validator.py normalizes scores, flags out-of-range, adjusts confidence based on variance from expected.' },
+  { id:'F11', part:'c', section:'Writing Coach Flow',
+    q:'How are improvement suggestions generated?',
+    a:'Gemini prompted for specific, actionable suggestions (not generic "improve your writing"). Structured as "Instead of [X], write [Y] because [reason]." coach_validator.py strips markdown, controls length for ScoreCard display.' },
+  { id:'F12', part:'c', section:'Writing Coach Flow',
+    q:'How does the coach handle very weak answers?',
+    a:'When <20 characters or generic only, detects and provides: (1) Lower score (0-2), (2) Detailed explanation of what question asks, (3) Structured outline to follow, (4) Key concepts to include, (5) Complete model answer in improved_answer. Turns weak answer into learning opportunity.' },
+  { id:'F13', part:'c', section:'Writing Coach Flow',
+    q:'How is coach output normalized?',
+    a:'coach_validator.py: (1) Score clamp to 0-10, (2) Markdown stripping (** → clean), (3) List length max 5, (4) Improved answer max 500 chars, (5) Duplicate suggestion removal, (6) Generic suggestion blocking ("try harder" without specifics).' },
+  // Navigator
+  { id:'F14', part:'c', section:'Navigator & Government Data',
+    q:'How are government entitlements explained?',
+    a:'Query matched against data/entitlements.json (7 schemes). Matched schemes → Gemini with instructions: (1) What scheme is (Tamil + English), (2) Who is eligible, (3) How to apply, (4) Deadline, (5) Official link. Fact-lock ensures official links preserved exactly — no invented URLs.' },
+  { id:'F15', part:'c', section:'Navigator & Government Data',
+    q:'How does hallucination prevention work for government data?',
+    a:'Data has specific numbers (percentages, age limits, income thresholds) and URLs. Fact-lock extracts all from source, verifies each in output. If Gemini invents "deadline: March 15, 2025" when actual is "Rolling basis", fact-lock catches. Keyword-lock ensures scheme names + eligibility criteria preserved verbatim.' },
+  { id:'F16', part:'c', section:'Navigator & Government Data',
+    q:'How are university processes explained?',
+    a:'Matched against data/processes.json (Semester Registration, Exam Registration, Revaluation). Each has step-by-step instructions. LLM generates bilingual: (1) Steps in order, (2) Required documents, (3) Fees and payment, (4) Deadlines, (5) Tips. Fact-lock ensures step counts and document names match source.' },
+  { id:'F17', part:'c', section:'Navigator & Government Data',
+    q:'How does keyword-lock work for navigator data?',
+    a:'Extracts: scheme/process name, eligibility keywords, deadline terms, required documents, official links. After LLM generation, verifies each keyword appears (or has Tamil equivalent). Coverage score = matched/total. If <80%, flagged. Prevents "First Graduate Certificate from Tahsildar" being simplified to "government document."' },
+  // Safety Scenarios
+  { id:'F18', part:'c', section:'Safety Scenarios',
+    q:'What happens with prompt injection attempts?',
+    a:'Sanitizer catches at two levels: (1) Pre-processing — XML delimiter wrapping separates user content from system, (2) Pattern detection — regex checks for "ignore previous instructions", "you are now", "system:" prefixes, role-playing attacks. If detected: sanitized (injection stripped) or rejected with safety error. Audit middleware logs attempt.' },
+  { id:'F19', part:'c', section:'Safety Scenarios',
+    q:'What happens when LLM hallucinates numbers in scheme explanation?',
+    a:'Example: Gemini invents "deadline: January 31, 2025" for Pudhumai Penn (actual: "Rolling basis"). Fact-lock finds new_numbers: ["2025"], missing_deadline: true. Service can: (1) Return with warning flag, (2) Replace hallucinated number with source value, (3) Reject entirely. Current: flags and returns with reduced confidence.' },
+  { id:'F20', part:'c', section:'Safety Scenarios',
+    q:'What happens when circuit breaker trips?',
+    a:'After 3 consecutive Gemini failures (quota, timeout, 5xx) → OPEN state. All requests fail fast with fallback: {"status":"error","message":"Service temporarily unavailable. Please try again in 60 seconds."}. No LLM call attempted (saves quota, prevents cascade). After 60s → HALF_OPEN: one test request. Success → CLOSED. Failure → OPEN. /health exposes state.' },
+  { id:'F21', part:'c', section:'Safety Scenarios',
+    q:'What happens when a student exceeds rate limit?',
+    a:'After 20 requests in 60s → 429 Too Many Requests with Retry-After header. Frontend displays "You\'re sending too many requests. Please wait a moment." Rate limiter uses X-Forwarded-For header (for proxied) or direct IP.' },
+  { id:'F22', part:'c', section:'Safety Scenarios',
+    q:'Can someone poison the cache with bad data?',
+    a:'Cache key = normalized query + endpoint + language config hash. Stored responses already validated (fact-lock, keyword-lock, Tamil ratio). Poisoned data would need to pass all validators. TTL (600s) limits damage. Production: add user/session identifiers to prevent cross-user poisoning.' },
+  // Edge Cases
+  { id:'F23', part:'c', section:'Edge Cases & Domain',
+    q:'What happens with empty or garbage input?',
+    a:'QueryRequest validates: min_length=1, max_length=500. Empty → 422 Validation Error. <3 chars → concept resolver may not find meaningful concept → LLM prompted for clarification. Unicode garbage → resolver fails to extract concept → low-confidence response with rephrase suggestion.' },
+  { id:'F24', part:'c', section:'Edge Cases & Domain',
+    q:'What happens with extremely long queries?',
+    a:'QueryRequest max_length=500. Longer → 422 rejected. CoachRequest student_answer max_length=2000. Prevents prompt overflow (Gemini token limits) and ensures reasonable response times. Frontend shows remaining character counter.' },
+  { id:'F25', part:'c', section:'Edge Cases & Domain',
+    q:'How is cross-language semantic alignment verified?',
+    a:'validators/validators.py validate_semantic_alignment(): (1) Extract key concepts from tamil_simple and english_academic, (2) Check core concepts appear in both (accounting for translation), (3) Alignment score = matched_concepts / total_concepts, (4) If <0.7, flagged for review. Catches cases where Tamil and English discuss different aspects — bilingual generation failure mode.' },
+];
+
+// ===== STATE =====
+let statuses = {};
+let activeParts = { a: true, b: true, c: true };
+let searchQuery = '';
+let studyIndex = -1;
+let studyList = [];
+
+// ===== LOAD SAVED STATE =====
+function loadState() {
+  try {
+    const saved = localStorage.getItem('vb_interview_statuses');
+    if (saved) statuses = JSON.parse(saved);
+  } catch(e) {}
+}
+function saveState() {
+  try {
+    localStorage.setItem('vb_interview_statuses', JSON.stringify(statuses));
+  } catch(e) {}
+}
+
+// ===== RENDER GRID =====
+function render() {
+  const grid = document.getElementById('grid');
+  
+  // Filter
+  const filtered = questions.filter(q => {
+    if (!activeParts[q.part]) return false;
+    if (searchQuery) {
+      const sq = searchQuery.toLowerCase();
+      return q.q.toLowerCase().includes(sq) || q.a.toLowerCase().includes(sq) || q.id.toLowerCase().includes(sq) || q.section.toLowerCase().includes(sq);
+    }
+    return true;
+  });
+
+  // Group by part
+  const parts = { a: [], b: [], c: [] };
+  filtered.forEach(q => parts[q.part].push(q));
+
+  let html = '';
+  
+  // Stats
+  const totalDone = questions.filter(q => statuses[q.id] === 'mastered').length;
+  const totalStudying = questions.filter(q => statuses[q.id] === 'studying').length;
+  const partACount = questions.filter(q => q.part === 'a').length;
+  const partBCount = questions.filter(q => q.part === 'b').length;
+  const partCCount = questions.filter(q => q.part === 'c').length;
+  
+  document.getElementById('statTotal').textContent = questions.length;
+  document.getElementById('statMastered').textContent = totalDone;
+  document.getElementById('statStudying').textContent = totalStudying;
+  document.getElementById('statPartA').textContent = partACount;
+  document.getElementById('statPartB').textContent = partBCount;
+  document.getElementById('statPartC').textContent = partCCount;
+  document.getElementById('totalMastered').textContent = totalDone;
+  
+  const pct = Math.round((totalDone / questions.length) * 100);
+  document.getElementById('totalPct').textContent = pct + '%';
+  document.getElementById('progressBar').style.width = pct + '%';
+
+  // Sections
+  const sections = { a: 'Part A: General & High-Level', b: 'Part B: Technical Drilldown', c: 'Part C: Domain Questions' };
+  const colors = { a: 'a', b: 'b', c: 'c' };
+  const labels = { a: 'A', b: 'B', c: 'C' };
+
+  for (const part of ['a', 'b', 'c']) {
+    const items = parts[part];
+    if (items.length === 0) continue;
+    
+    html += `
+      <div class="part-header">
+        <div class="part-dot ${colors[part]}"></div>
+        <div class="part-label">${sections[part]}</div>
+        <span class="part-count">${items.length} questions</span>
+        <div class="part-divider"></div>
+      </div>
+      <div class="grid" id="grid-${part}">
+    `;
+    
+    items.forEach(q => {
+      const status = statuses[q.id] || 'new';
+      const ans = q.a;
+      const statusClass = status === 'mastered' ? 'mastered' : '';
+      const statusDot = status === 'mastered' ? 'mastered' : (status === 'studying' ? 'studying' : '');
+      
+      html += `
+        <div class="byte ${statusClass}" data-id="${q.id}" onclick="toggleExpand('${q.id}')">
+          <div class="byte-top">
+            <div class="byte-top-left">
+              <span class="byte-id">${q.id}</span>
+              <span class="byte-part ${q.part}">${labels[q.part]}</span>
+              <span style="color:var(--text3);font-weight:400;font-family:var(--mono);font-size:9px">${q.section}</span>
+            </div>
+            <div class="byte-top-right">
+              <div class="byte-status ${statusDot}"></div>
+            </div>
+          </div>
+          <div class="byte-question">${q.q}</div>
+          <div class="byte-answer" id="ans-${q.id}">
+            <div class="byte-answer-text">${ans}</div>
+          </div>
+          <div class="byte-footer">
+            <span>${q.id} · ${q.part === 'a' ? 'General' : q.part === 'b' ? 'Technical' : 'Domain'}</span>
+            <div class="byte-actions" onclick="event.stopPropagation()">
+              <button class="byte-btn ${status === 'studying' ? 'struggled' : ''}" onclick="setStatus('${q.id}','studying')">🔄 Study</button>
+              <button class="byte-btn ${status === 'mastered' ? 'mastered' : ''}" onclick="setStatus('${q.id}','mastered')">✅ Master</button>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+    
+    html += `</div>`;
+  }
+  
+  grid.innerHTML = html;
+}
+
+// ===== ACTIONS =====
+function toggleExpand(id) {
+  const el = document.getElementById(`ans-${id}`);
+  const card = el.closest('.byte');
+  card.classList.toggle('expanded');
+}
+
+function setStatus(id, status) {
+  if (statuses[id] === status) delete statuses[id];
+  else statuses[id] = status;
+  saveState();
+  render();
+}
+
+function filterPart(part) {
+  activeParts[part] = !activeParts[part];
+  document.getElementById(`chip-${part}`).classList.toggle('active');
+  render();
+}
+
+function filterAll() {
+  const allActive = activeParts.a && activeParts.b && activeParts.c;
+  activeParts = { a: !allActive, b: !allActive, c: !allActive };
+  document.getElementById('chip-all').classList.toggle('active');
+  document.getElementById('chip-a').classList.toggle('active');
+  document.getElementById('chip-b').classList.toggle('active');
+  document.getElementById('chip-c').classList.toggle('active');
+  render();
+}
+
+function filterSearch() {
+  searchQuery = document.getElementById('searchInput').value;
+  render();
+}
+
+// ===== STUDY MODE =====
+function startStudyMode() {
+  studyList = questions.filter(q => {
+    if (!activeParts[q.part]) return false;
+    if (searchQuery) {
+      const sq = searchQuery.toLowerCase();
+      return q.q.toLowerCase().includes(sq) || q.a.toLowerCase().includes(sq);
+    }
+    return true;
+  }).filter(q => statuses[q.id] !== 'mastered');
+  
+  if (studyList.length === 0) {
+    studyList = questions.filter(q => {
+      if (!activeParts[q.part]) return false;
+      if (searchQuery) {
+        const sq = searchQuery.toLowerCase();
+        return q.q.toLowerCase().includes(sq) || q.a.toLowerCase().includes(sq);
+      }
+      return true;
+    });
+  }
+  
+  studyIndex = 0;
+  document.getElementById('studyMode').classList.add('active');
+  showStudyCard();
+}
+
+function exitStudyMode() {
+  document.getElementById('studyMode').classList.remove('active');
+}
+
+function showStudyCard() {
+  if (studyIndex >= studyList.length) {
+    document.getElementById('studyQuestion').textContent = '🎉 All done! You\'ve reviewed everything.';
+    document.getElementById('studyAnswer').textContent = 'Great job! Close study mode or reshuffle.';
+    document.getElementById('studyTag').textContent = 'Complete';
+    document.getElementById('studyTag').className = 'study-card-tag grn';
+    document.getElementById('studyProgress').textContent = `${studyIndex} / ${studyList.length}`;
+    return;
+  }
+  
+  const q = studyList[studyIndex];
+  const partName = q.part === 'a' ? 'Part A · General' : q.part === 'b' ? 'Part B · Technical' : 'Part C · Domain';
+  
+  document.getElementById('studyTag').textContent = `${q.id} · ${partName} · ${q.section}`;
+  document.getElementById('studyTag').className = `study-card-tag ${q.part}`;
+  document.getElementById('studyQuestion').textContent = q.q;
+  document.getElementById('studyAnswer').innerHTML = q.a;
+  document.getElementById('studyProgress').textContent = `${studyIndex + 1} / ${studyList.length}`;
+  
+  // Animate
+  const card = document.getElementById('studyCard');
+  card.style.animation = 'none';
+  setTimeout(() => card.style.animation = 'fadeUp 0.3s ease', 10);
+}
+
+function studyNext() {
+  studyIndex++;
+  showStudyCard();
+}
+
+function studyMark(action) {
+  const q = studyList[studyIndex];
+  if (!q) return;
+  
+  if (action === 'mastered') { statuses[q.id] = 'mastered'; saveState(); studyIndex++; showStudyCard(); render(); }
+  else if (action === 'review') { studyIndex++; showStudyCard(); }
+  else if (action === 'struggle') { statuses[q.id] = 'studying'; saveState(); studyIndex++; showStudyCard(); render(); }
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') exitStudyMode();
+  if (e.key === ' ' && document.getElementById('studyMode').classList.contains('active')) {
+    e.preventDefault();
+    studyNext();
+  }
+  if (e.key === '1' && document.getElementById('studyMode').classList.contains('active')) studyMark('struggle');
+  if (e.key === '2' && document.getElementById('studyMode').classList.contains('active')) studyMark('review');
+  if (e.key === '3' && document.getElementById('studyMode').classList.contains('active')) studyMark('mastered');
+});
+
+// ===== INIT =====
+loadState();
+render();
+
+// Initialize all filter chips as active
+document.getElementById('chip-all').classList.add('active');
+</script>
+</body>
+</html>
