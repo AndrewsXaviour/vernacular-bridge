@@ -1,5 +1,5 @@
 export async function fetchCoach(question: string, student_answer: string, signal?: AbortSignal) {
-  const res = await fetch("/coach", {
+  const res = await fetch("/api/coach", {
     method: "POST",
     body: JSON.stringify({ 
       question, 

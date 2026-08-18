@@ -24,20 +24,21 @@ class CoachResponse(BaseModel):
 
     Attributes:
         score: Rubric score from 0 to 10.
-        structure_feedback: Structural feedback on the answer.
+        strengths: List of strong points in the answer.
+        weaknesses: List of weak points in the answer.
         missing_points: Key points the student missed.
-        language_feedback: Language quality feedback.
+        improvement_suggestions: Specific actionable suggestions.
         improved_answer: A model improved version of the answer.
 
     Raises:
-        ValidationError: If improved_answer exceeds 10000 chars, or
-            missing_points count is insufficient for the given score.
+        ValidationError: If missing_points count is insufficient for the given score.
     """
     score: int = Field(..., ge=0, le=10)
-    structure_feedback: str = Field(..., min_length=5, max_length=5000)
+    strengths: List[str] = Field(..., min_length=0)
+    weaknesses: List[str] = Field(..., min_length=0)
     missing_points: List[str] = Field(..., min_length=0)
-    language_feedback: str = Field(..., min_length=5, max_length=5000)
-    improved_answer: str = Field(..., min_length=30, max_length=10000)
+    improvement_suggestions: List[str] = Field(..., min_length=0)
+    improved_answer: str = Field(..., min_length=0, max_length=10000)
 
     @field_validator("missing_points")
     @classmethod

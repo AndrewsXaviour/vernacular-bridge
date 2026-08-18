@@ -242,7 +242,10 @@ async def async_call_gemini(model_name: str, prompt: str) -> str:
     """
     client = _get_client()
     try:
-        response = await client.aio.models.generate_content(
+        # Run the synchronous client in a thread pool to completely bypass 
+        # aiohttp's Windows DNS resolution bug, since standard sockets work fine!
+        response = await asyncio.to_thread(
+            client.models.generate_content,
             model=model_name,
             contents=prompt,
             config=types.GenerateContentConfig(

@@ -1,6 +1,5 @@
 import React from 'react';
-import { ListOrdered, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Sun, Droplet, FlaskConical, Package, ArrowRight } from 'lucide-react';
 
 interface StepsCardProps {
   steps?: string[];
@@ -9,60 +8,55 @@ interface StepsCardProps {
 export default function StepsCard({ steps }: StepsCardProps) {
   if (!steps || steps.length === 0) return null;
 
+  const icons = [
+    <div key="sun" className="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center text-green-600"><Sun className="w-6 h-6" /></div>,
+    <div key="droplet" className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-500"><Droplet className="w-6 h-6" /></div>,
+    <div key="flask" className="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600"><FlaskConical className="w-6 h-6" /></div>,
+    <div key="package" className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600"><Package className="w-6 h-6" /></div>,
+  ];
+
   return (
-    <div className="bg-white rounded-[2.5rem] border border-gray-100 p-12 shadow-sm space-y-12 relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-64 h-64 bg-slate-50 rounded-full -mr-32 -mt-32 blur-3xl opacity-50" />
+    <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm font-sans mb-6">
       
-      <div className="flex items-center justify-between relative z-10">
-        <div className="flex items-center space-x-4">
-          <div className="bg-slate-900/5 p-3 rounded-2xl">
-            <ListOrdered className="w-6 h-6 text-slate-700" />
-          </div>
-          <div>
-            <h3 className="text-xl font-black text-gray-900 tracking-tight">Step-by-Step Breakdown</h3>
-            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Procedural Understanding</p>
-          </div>
+      {/* Header section with number */}
+      <div className="flex items-center space-x-3 mb-8">
+        <div className="w-6 h-6 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center text-xs font-bold">
+          3
         </div>
-        <div className="px-4 py-1.5 bg-slate-50 rounded-full border border-slate-100 text-[10px] font-black text-slate-600 uppercase tracking-widest">
-          {steps.length} Logical Stages
-        </div>
+        <h2 className="text-sm font-bold text-purple-800">How it Works (Steps)</h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
-        {steps.map((step, index) => (
-          <motion.div 
-            key={index}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.1 }}
-            className="group relative bg-[#fcfaf7] p-8 rounded-[2rem] border border-stone-200/60 hover:border-slate-300 transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/40"
-          >
-            <div className="flex items-start space-x-6">
-              <div className="flex-shrink-0">
-                <div className="w-12 h-12 bg-white rounded-2xl shadow-sm border border-stone-100 flex items-center justify-center">
-                  <span className="text-xl font-black text-slate-800 opacity-20 group-hover:opacity-100 transition-opacity">
-                    {index + 1}
-                  </span>
+      <div className="flex items-start justify-between relative px-2">
+        {steps.map((step, index) => {
+          // Split title and description if format is "Title: Description"
+          const parts = step.split(':');
+          const title = parts.length > 1 ? parts[0].trim() : `Step ${index + 1}`;
+          const description = parts.length > 1 ? parts.slice(1).join(':').trim() : step;
+
+          return (
+            <React.Fragment key={index}>
+              <div className="flex flex-col items-center flex-1 max-w-[200px] text-center z-10">
+                <div className="mb-4">
+                  {icons[index % icons.length]}
                 </div>
-              </div>
-              <div className="space-y-4">
-                <p className="text-[1.05rem] font-bold text-slate-800 leading-relaxed tracking-tight">
-                  {step}
+                <h4 className="text-xs font-bold text-slate-800 mb-1">
+                  {index + 1}. {title}
+                </h4>
+                <p className="text-[11px] text-slate-500 font-medium leading-relaxed">
+                  {description}
                 </p>
-                <div className="flex items-center space-x-2 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
-                   <span>Sequence Logged</span>
-                   <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                </div>
               </div>
-            </div>
-            
-            {/* Visual connector for sequence */}
-            {index < steps.length - 1 && (
-              <div className="absolute -bottom-3 left-14 w-px h-6 bg-stone-200 z-0 hidden md:block" />
-            )}
-          </motion.div>
-        ))}
+
+              {index < steps.length - 1 && (
+                <div className="hidden md:flex flex-1 items-center justify-center mt-6 z-0">
+                  <ArrowRight className="w-4 h-4 text-blue-600" />
+                </div>
+              )}
+            </React.Fragment>
+          );
+        })}
       </div>
+      
     </div>
   );
 }

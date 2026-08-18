@@ -23,20 +23,21 @@ def normalize_coach_output(data: Dict[str, Any]) -> Dict[str, Any]:
     if not isinstance(data, dict):
         data = {}
 
+    def parse_list(key: str) -> list[str]:
+        val = data.get(key, [])
+        if isinstance(val, list):
+            return [str(p).strip() for p in val if p][:5] # F13: max 5 items
+        return []
+
     result = {}
     result["score"] = int(data.get("score", 0))
-    result["structure_feedback"] = str(data.get("structure_feedback", "")).strip()
-    
-    missing = data.get("missing_points", [])
-    if isinstance(missing, list):
-        result["missing_points"] = [str(p).strip() for p in missing if p]
-    else:
-        result["missing_points"] = []
-        
-    result["language_feedback"] = str(data.get("language_feedback", "")).strip()
+    result["strengths"] = parse_list("strengths")
+    result["weaknesses"] = parse_list("weaknesses")
+    result["missing_points"] = parse_list("missing_points")
+    result["improvement_suggestions"] = parse_list("improvement_suggestions")
     
     raw_improved = str(data.get("improved_answer", "")).strip()
-    result["improved_answer"] = strip_markdown(raw_improved)
+    result["improved_answer"] = strip_markdown(raw_improved)[:500] # F13: max 500 chars
     
     return result
 
@@ -46,8 +47,9 @@ def validate_coach_logic(data: Dict[str, Any]):
     """
     score = data["score"]
     improved_answer = data["improved_answer"]
-    structure_feedback = data["structure_feedback"]
     missing_points = data["missing_points"]
+    strengths = data["strengths"]
+    weaknesses = data["weaknesses"]
 
     # 1. Score Range
     if not (0 <= score <= 10):
@@ -60,23 +62,11 @@ def validate_coach_logic(data: Dict[str, Any]):
         raise ValueError("Score <= 5 requires at least 2 missing points")
 
     # 3. Safeguard 1: Answer Length Sanity Check
-    words = improved_answer.split()
-    if len(words) < 30:
-        raise ValueError("Improved answer too short (< 30 words)")
-    
-    if len(words) > 300:
-        # Truncate to 300 words
-        data["improved_answer"] = " ".join(words[:300])
+    if len(improved_answer) < 30:
+        raise ValueError("Improved answer too short (< 30 chars)")
 
     # 4. Safeguard 2: Score–Tone Alignment Check
-    if score <= 4:
-        lower_feedback = structure_feedback.lower()
-        if "improve" not in lower_feedback and "missing" not in lower_feedback:
-            # Injecting critical feedback if LLM missed the tone
-            data["structure_feedback"] = f"Needs significant improvement. {structure_feedback}"
-
-    # 5. Language Handling (Primary feedback exists check)
-    if not data["language_feedback"]:
-         raise ValueError("Language feedback is empty")
+    if score <= 4 and len(weaknesses) == 0:
+        data["weaknesses"].append("Needs significant improvement.")
 
     return data

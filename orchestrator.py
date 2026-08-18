@@ -10,8 +10,14 @@ Application lifecycle:
 """
 
 import os
+import sys
+import asyncio
 import logging
 from fastapi import FastAPI
+
+# Fix for aiohttp DNS resolution bug on Windows
+if sys.platform == "win32":
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 

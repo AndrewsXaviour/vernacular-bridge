@@ -88,3 +88,8 @@ raw_llm_output.txt
 final_output.json
 nul
 
+# ========================
+# Temporary overrides
+# ========================
+*.md
+~$*.docx

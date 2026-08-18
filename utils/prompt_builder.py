@@ -143,6 +143,11 @@ Total Score = 10
 * Follow academic structure (Introduction, Body, Conclusion).
 * Include all missing key points.
 * Must be significantly more complete and clearer than student_answer.
+* DO NOT exceed 500 characters.
+
+📘 FEEDBACK LIST REQUIREMENTS:
+* Keep strengths, weaknesses, missing_points, and improvement_suggestions strictly under 5 items each.
+* Format improvement_suggestions exactly like: "Instead of [X], write [Y] because [reason]".
 [COACH_BLOCK_END]
 """
 
@@ -156,9 +161,10 @@ def build_coach_footer(primary_lang: str, secondary_lang: str) -> str:
 📦 OUTPUT FORMAT (STRICT JSON):
 {{
   "score": integer (0-10),
-  "structure_feedback": "...",
+  "strengths": ["...", "..."],
+  "weaknesses": ["...", "..."],
   "missing_points": ["...", "..."],
-  "language_feedback": "...",
+  "improvement_suggestions": ["Instead of X, write Y because Z", "..."],
   "improved_answer": "..."
 }}
 

@@ -1,5 +1,5 @@
 export async function fetchNavigator(query: string, signal?: AbortSignal) {
-  const res = await fetch("/navigator", {
+  const res = await fetch("/api/navigator", {
     method: "POST",
     body: JSON.stringify({ query }),
     headers: { "Content-Type": "application/json" },

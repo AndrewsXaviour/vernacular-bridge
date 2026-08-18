@@ -28,15 +28,28 @@ async def coach_answer(request: CoachRequest, _key: str = Depends(verify_api_key
     """
     check_injection_patterns(request.question)
     check_injection_patterns(request.student_answer)
+
+    # F12: Weak Answer Edge Case
+    if len(request.student_answer.strip()) < 20:
+        return {
+            "score": 1,
+            "strengths": [],
+            "weaknesses": ["Answer is too short to evaluate properly.", "Lacks fundamental details."],
+            "missing_points": ["Almost all key concepts are missing."],
+            "improvement_suggestions": ["Instead of a single sentence, write a full paragraph explaining the concept.", "Ensure you cover the 'how' and 'why'."],
+            "improved_answer": "Your answer is too short for the AI to refine without hallucinating. Please elaborate on your points and try again.",
+        }
+
     result = await internal_coach(
         request.question, request.student_answer, request.language_config
     )
     if not result:
         return {
             "score": 0,
-            "structure_feedback": "Unable to evaluate answer due to a system error.",
+            "strengths": [],
+            "weaknesses": ["Unable to evaluate answer due to a system error."],
             "missing_points": ["System Error"],
-            "language_feedback": "Error processing request.",
+            "improvement_suggestions": ["Please try again."],
             "improved_answer": "System encountered an error during evaluation. Please try again.",
         }
     return result

@@ -72,6 +72,9 @@ async def internal_learn(query: str, lang_config: Any) -> Optional[dict]:
     if not parsed:
         return None
 
+    if parsed.get("status") == "error":
+        return parsed
+
     # 3. Pydantic validates AND normalizes via @model_validator(mode='before')
     validated = OutputSchema.model_validate(parsed)
     result = validated.model_dump()

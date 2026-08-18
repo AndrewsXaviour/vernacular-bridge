@@ -11,35 +11,35 @@ const nextConfig: NextConfig = {
 
     return [
       {
-        source: "/full-flow",
+        source: "/api/full-flow",
         destination: `${backendUrl}/full-flow`,
       },
       {
-        source: "/coach",
+        source: "/api/coach",
         destination: `${backendUrl}/coach`,
       },
       {
-        source: "/navigator/:path*",
+        source: "/api/navigator/:path*",
         destination: `${backendUrl}/navigator/:path*`,
       },
       {
-        source: "/learn",
+        source: "/api/learn",
         destination: `${backendUrl}/learn`,
       },
       {
-        source: "/generate",
+        source: "/api/generate",
         destination: `${backendUrl}/generate`,
       },
       {
-        source: "/entitlements",
+        source: "/api/entitlements",
         destination: `${backendUrl}/entitlements`,
       },
       {
-        source: "/processes",
+        source: "/api/processes",
         destination: `${backendUrl}/processes`,
       },
       {
-        source: "/health",
+        source: "/api/health",
         destination: `${backendUrl}/health`,
       },
     ];

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookOpen, Award } from 'lucide-react';
+import { Volume2 } from 'lucide-react';
 import InteractiveText from '../InteractiveText';
 
 interface EnglishCardProps {
@@ -7,54 +7,41 @@ interface EnglishCardProps {
 }
 
 export default function EnglishCard({ content }: EnglishCardProps) {
+  // Placeholder key terms for UI demonstration
+  const keyTerms = ['plant', 'sunlight', 'chlorophyll', 'glucose', 'oxygen'];
+
   return (
-    <div className="bg-white rounded-[2.5rem] border border-gray-100 border-l-[6px] border-l-indigo-600 p-12 shadow-sm transition-all duration-300 relative overflow-hidden group">
-      <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50/50 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-indigo-100/50 transition-colors" />
+    <div className="bg-[#f0f7ff] rounded-2xl border border-[#cce4ff] p-5 shadow-sm font-sans flex flex-col h-full">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-sm font-bold text-[#1e5eb8]">Academic English</h3>
+        <button className="text-[#1e5eb8] hover:bg-[#dbeafe] p-1.5 rounded-lg transition-colors">
+          <Volume2 className="w-4 h-4" />
+        </button>
+      </div>
       
-      <div className="flex items-center justify-between mb-10 relative z-10">
-        <div className="flex items-center space-x-4">
-          <div className="bg-indigo-600/10 p-3 rounded-2xl">
-            <BookOpen className="w-6 h-6 text-indigo-600" />
-          </div>
-          <div>
-            <h3 className="text-xl font-black text-gray-900 tracking-tight">Academic Narrative</h3>
-            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Formal Linguistic Synthesis</p>
-          </div>
-        </div>
-
-        <div className="flex items-center space-x-2 px-4 py-2 bg-indigo-50 rounded-xl border border-indigo-100">
-          <Award className="w-3.5 h-3.5 text-indigo-600" />
-          <span className="text-[10px] font-black text-indigo-700 uppercase tracking-widest">Precision Level: Advanced</span>
+      <div className="flex-grow mb-6">
+        <div className="text-slate-700 font-medium leading-relaxed text-sm text-justify">
+          {content ? (
+            <InteractiveText text={content} />
+          ) : (
+            <div className="space-y-3">
+              <div className="h-3 bg-[#dbeafe] rounded-full w-full animate-pulse" />
+              <div className="h-3 bg-[#dbeafe] rounded-full w-[85%] animate-pulse" />
+              <div className="h-3 bg-[#dbeafe] rounded-full w-[95%] animate-pulse" />
+            </div>
+          )}
         </div>
       </div>
       
-      <div className="relative z-10">
-        <div className="prose prose-indigo max-w-none">
-          <div className="text-lg md:text-[1.15rem] leading-[1.9] text-[#1e293b] whitespace-pre-wrap font-serif italic text-justify">
-            {content ? (
-              <InteractiveText text={content} />
-            ) : (
-              <div className="space-y-4">
-                <div className="h-4 bg-gray-50 rounded-full w-full animate-pulse" />
-                <div className="h-4 bg-gray-50 rounded-full w-[85%] animate-pulse" />
-                <div className="h-4 bg-gray-50 rounded-full w-[95%] animate-pulse" />
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-12 pt-8 border-t border-gray-50 flex items-center justify-between relative z-10">
-        <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Linguistic Metrics</div>
-        <div className="flex space-x-6">
-          <div className="flex flex-col items-center">
-            <span className="text-sm font-black text-indigo-600">85%</span>
-            <span className="text-[8px] font-bold text-gray-400 uppercase tracking-tighter">Vocabulary Density</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="text-sm font-black text-indigo-600">Complex</span>
-            <span className="text-[8px] font-bold text-gray-400 uppercase tracking-tighter">Sentence Structure</span>
-          </div>
+      <div className="mt-auto pt-4 border-t border-[#cce4ff] flex items-center space-x-2">
+        <span className="text-xs font-bold text-[#1e5eb8]">Key terms:</span>
+        <div className="flex flex-wrap gap-1">
+          {keyTerms.map((term, i) => (
+            <React.Fragment key={i}>
+              <span className="text-xs text-[#1e5eb8]">{term}</span>
+              {i < keyTerms.length - 1 && <span className="text-[#1e5eb8] text-xs">,</span>}
+            </React.Fragment>
+          ))}
         </div>
       </div>
     </div>

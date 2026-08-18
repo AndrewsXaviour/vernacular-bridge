@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { HelpCircle, CheckCircle, XCircle, Lightbulb, RefreshCw } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Check, RefreshCcw } from 'lucide-react';
 import { useLearning } from '@/context/LearningContext';
 
 interface MCQ {
@@ -14,7 +13,7 @@ interface MCQSectionProps {
 }
 
 export default function MCQSection({ mcqs }: MCQSectionProps) {
-  const { updateMCQResult, goToStage } = useLearning();
+  const { updateMCQResult } = useLearning();
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
 
   const handleOptionClick = (mcqIndex: number, option: string, isCorrect: boolean) => {
@@ -26,57 +25,47 @@ export default function MCQSection({ mcqs }: MCQSectionProps) {
   if (!mcqs || mcqs.length === 0) return null;
 
   return (
-    <div className="bg-white rounded-[2.5rem] border border-gray-100 p-10 shadow-sm space-y-12">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <div className="bg-amber-500/10 p-2.5 rounded-xl">
-            <HelpCircle className="w-5 h-5 text-amber-600" />
-          </div>
-          <div>
-            <h3 className="text-lg font-black text-gray-900 tracking-tight">Intelligence Check</h3>
-            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Validating Concept Acquisition</p>
-          </div>
+    <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm font-sans mb-6 h-full flex flex-col">
+      
+      {/* Header section with number */}
+      <div className="flex items-center space-x-3 mb-6">
+        <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold">
+          5
         </div>
-        <div className="px-4 py-1.5 bg-amber-50 rounded-full border border-amber-100 text-[10px] font-black text-amber-700 uppercase tracking-widest">
-          {Object.keys(selectedAnswers).length} / {mcqs.length} COMPLETED
-        </div>
+        <h2 className="text-sm font-bold text-blue-700">Practice Now (MCQs)</h2>
       </div>
 
-      <div className="space-y-16">
+      <div className="flex-grow space-y-8">
         {mcqs.map((mcq, mIndex) => {
           const selected = selectedAnswers[mIndex];
           const isCorrect = selected === mcq.correct_answer;
 
           return (
-            <div key={mIndex} className="space-y-8 relative">
-              {mIndex > 0 && <div className="absolute -top-8 left-0 right-0 h-px bg-gray-50" />}
-              
-              <div className="space-y-4">
-                <div className="flex items-center space-x-3">
-                  <span className="text-[10px] font-black bg-gray-900 text-white px-2.5 py-1 rounded-lg uppercase tracking-widest">Question {mIndex + 1}</span>
-                </div>
-                <h4 className="text-xl font-bold text-gray-900 leading-tight">
-                  {mcq.question}
-                </h4>
-              </div>
+            <div key={mIndex} className="space-y-4">
+              <h4 className="text-xs font-bold text-slate-800">Sample MCQ {mIndex > 0 ? mIndex + 1 : ''}</h4>
+              <p className="text-sm text-slate-900 font-semibold mb-4">
+                {mIndex + 1}. {mcq.question}
+              </p>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex flex-wrap gap-2">
                 {mcq.options.map((option, oIndex) => {
                   const isOptionSelected = selected === option;
                   const isThisCorrect = option === mcq.correct_answer;
                   
-                  let buttonClass = "group p-6 rounded-2xl border-2 border-gray-100 text-left transition-all duration-300 hover:border-teal-200 hover:bg-teal-50/30";
+                  let buttonClass = "flex items-center space-x-2 px-3 py-1.5 rounded-lg border text-xs font-bold transition-all ";
                   
                   if (selected) {
                     if (isOptionSelected) {
-                      buttonClass = isCorrect 
-                        ? "p-6 rounded-2xl border-2 border-[#0f766e] bg-teal-50 text-[#0f766e] shadow-lg shadow-teal-900/5 scale-[1.02]" 
-                        : "p-6 rounded-2xl border-2 border-red-500 bg-red-50 text-red-900 opacity-90";
+                      buttonClass += isCorrect 
+                        ? "border-green-300 bg-[#ebfbf3] text-green-700" 
+                        : "border-red-300 bg-red-50 text-red-700";
                     } else if (isThisCorrect) {
-                       buttonClass = "p-6 rounded-2xl border-2 border-green-100 bg-green-50/20 text-green-800 opacity-50";
+                      buttonClass += "border-green-300 bg-green-50 text-green-700 opacity-70";
                     } else {
-                       buttonClass = "p-6 rounded-2xl border border-gray-100 text-gray-300 opacity-30 cursor-not-allowed";
+                      buttonClass += "border-slate-200 bg-white text-slate-400 opacity-50 cursor-not-allowed";
                     }
+                  } else {
+                    buttonClass += "border-slate-200 bg-white text-slate-700 hover:border-blue-400 hover:text-blue-700";
                   }
 
                   return (
@@ -86,61 +75,24 @@ export default function MCQSection({ mcqs }: MCQSectionProps) {
                       disabled={!!selected}
                       className={buttonClass}
                     >
-                      <div className="flex items-center space-x-4">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-colors
-                          ${isOptionSelected && isCorrect ? 'bg-[#0f766e] text-white' : 
-                            isOptionSelected && !isCorrect ? 'bg-red-500 text-white' : 
-                            'bg-gray-100 text-gray-400 group-hover:bg-teal-100 group-hover:text-teal-600'}
-                        `}>
-                          {String.fromCharCode(65 + oIndex)}
-                        </div>
-                        <span className="flex-grow font-bold text-[0.95rem]">{option}</span>
-                        {isOptionSelected && (
-                          isCorrect ? <CheckCircle className="w-5 h-5 text-[#0f766e]" /> : <XCircle className="w-5 h-5 text-red-600" />
-                        )}
-                      </div>
+                      <span>{String.fromCharCode(65 + oIndex)}. {option}</span>
+                      {isOptionSelected && isCorrect && <Check className="w-3.5 h-3.5 text-green-600 ml-1" />}
                     </button>
                   );
                 })}
               </div>
-
-              <AnimatePresence>
-                {selected && (
-                  <motion.div 
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    className={`p-6 rounded-2xl border ${isCorrect ? 'bg-teal-50 border-teal-100' : 'bg-amber-50 border-amber-100'} space-y-4`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                         <Lightbulb className={`w-4 h-4 ${isCorrect ? 'text-[#0f766e]' : 'text-amber-600'}`} />
-                         <span className={`text-[10px] font-black uppercase tracking-widest ${isCorrect ? 'text-[#0f766e]' : 'text-amber-700'}`}>
-                           {isCorrect ? 'Verification Success' : 'Common Misconception Alert'}
-                         </span>
-                      </div>
-                      {!isCorrect && (
-                        <button 
-                          onClick={() => goToStage('steps')}
-                          className="flex items-center space-x-2 bg-white px-3 py-1 rounded-lg border border-amber-200 text-[10px] font-black text-amber-700 uppercase tracking-widest hover:bg-amber-100 transition-colors shadow-sm"
-                        >
-                          <RefreshCw className="w-3 h-3" />
-                          <span>Review Related Step</span>
-                        </button>
-                      )}
-                    </div>
-                    <p className={`text-sm font-bold leading-relaxed ${isCorrect ? 'text-[#0f766e]' : 'text-amber-800'}`}>
-                      {isCorrect 
-                        ? "Spot on! This indicates a deep understanding of the core mechanism. Your mastery score has been updated."
-                        : `Wait! Common mistake here. The correct answer is "${mcq.correct_answer}". Focus on the relationship between energy input and the resulting synthesis.`
-                      }
-                    </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
             </div>
           );
         })}
       </div>
+
+      <div className="mt-8 pt-4 border-t border-slate-100 flex items-center">
+        <button className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 font-bold text-xs py-1.5 px-3 rounded-lg hover:bg-blue-50 transition-colors">
+          <RefreshCcw className="w-3.5 h-3.5" />
+          <span>Generate More MCQs</span>
+        </button>
+      </div>
+
     </div>
   );
 }

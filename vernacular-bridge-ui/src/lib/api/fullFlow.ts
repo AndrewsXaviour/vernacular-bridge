@@ -1,5 +1,5 @@
 export async function fetchFullFlow(query: string, signal?: AbortSignal) {
-  const res = await fetch("/full-flow", {
+  const res = await fetch("/api/full-flow", {
     method: "POST",
     body: JSON.stringify({ query }),
     headers: { "Content-Type": "application/json" },

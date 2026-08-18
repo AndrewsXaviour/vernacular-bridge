@@ -25,7 +25,7 @@ export default function ConceptCard({ tamil_simple, english_academic }: ConceptC
       <div className="p-5 bg-indigo-50/50 border border-indigo-100 rounded-2xl">
         <h3 className="text-sm font-bold uppercase tracking-wider text-indigo-600 mb-3">Academic Definition (English)</h3>
         <p className="text-lg text-slate-800 leading-relaxed font-semibold font-serif italic">
-          "{english_academic}"
+          &quot;{english_academic}&quot;
         </p>
       </div>
     </div>
