@@ -293,7 +293,9 @@ function LearnWorkspaceContent() {
 export default function LearnPage() {
   return (
     <LearningProvider initialConceptId="default">
-      <LearnWorkspaceContent />
+      <React.Suspense fallback={<div className="p-8 text-center text-slate-500">Loading workspace...</div>}>
+        <LearnWorkspaceContent />
+      </React.Suspense>
     </LearningProvider>
   );
 }
