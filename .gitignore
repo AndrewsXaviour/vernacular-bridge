@@ -93,5 +93,6 @@ nul
 # ========================
 *.md
 *.txt
+!requirements*.txt
 *.docx
 ~$*.docx
