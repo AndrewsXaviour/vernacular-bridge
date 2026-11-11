@@ -42,7 +42,7 @@ class Settings(BaseSettings):
 
     # --- API Security ---
     api_keys: str = ""
-    allowed_origins: str = "http://localhost:3000,http://localhost:7860"
+    allowed_origins: str = "http://localhost:3000,http://localhost:7860,https://vernacular-bridge-six.vercel.app,https://vernacular-bridge-r36ygnixx-andrew-a545.vercel.app"
 
     # --- LLM Configuration ---
     primary_model: str = "gemini-3.5-flash-lite"
