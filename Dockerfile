@@ -11,15 +11,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
+# Copy all application code
 COPY orchestrator.py .
+COPY api/ api/
+COPY core/ core/
+COPY data/ data/
 COPY models/ models/
+COPY parsers/ parsers/
+COPY schemas/ schemas/
+COPY services/ services/
 COPY utils/ utils/
 COPY validators/ validators/
-COPY schemas/ schemas/
-COPY data/ data/
 
-# Railway uses $PORT env var, default to 8000
+# Uses $PORT env var (Render, Railway, Cloud Run), default to 8000
 EXPOSE 8000
 
 CMD ["sh", "-c", "uvicorn orchestrator:app --host 0.0.0.0 --port ${PORT:-8000}"]

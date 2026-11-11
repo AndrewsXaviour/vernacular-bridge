@@ -45,8 +45,8 @@ class Settings(BaseSettings):
     allowed_origins: str = "http://localhost:3000,http://localhost:7860"
 
     # --- LLM Configuration ---
-    primary_model: str = "gemini-2.5-flash"
-    secondary_model: str = "gemini-2.5-pro"
+    primary_model: str = "gemini-3.5-flash-lite"
+    secondary_model: str = "gemini-3.8-flash"
     llm_timeout: int = 30
     google_api_key: str = ""
 
